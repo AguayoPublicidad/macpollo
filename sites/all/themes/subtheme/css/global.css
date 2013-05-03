@@ -1,0 +1,107 @@
+/*BREADCRUMB*/
+#block-aguayo-tools-aguayo-breadcrumb span {
+    color: #FFDD00;
+    float: left;
+    padding: 2px 5px 0;
+}
+#block-aguayo-tools-aguayo-breadcrumb a {
+    color: #fff;
+    font-size: 16px;
+}
+#block-aguayo-tools-aguayo-breadcrumb a:hover{
+text-decoration: underline;
+color: #b29762;
+}
+#breadcrumb h3 {
+  margin: 0;
+  float: left;
+}
+.breadcrumb, #breadcrumb {
+  font-size: 0.75em;
+  margin: 0;
+  padding: 0;
+}
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+.breadcrumb a.active {
+  color: #333333;
+}
+/***search***/
+.block-search  form .form-item {
+  margin: 0;
+}
+.block-search  form input.form-submit, .block-search  form input.form-submit:hover {
+  margin: 0;
+  padding: 0;
+  color: transparent;
+  background: url(../images/ico-buscador.png) no-repeat 0 0;
+  font-size: 0;
+  border: 0;
+  width: 22px;
+  height: 24px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.block-search  form input.form-text {
+background: none repeat scroll 0 0 transparent;
+border: 0 none;
+line-height: 1;
+margin: 1px 5px 0 0;
+padding: 5px 10px;
+width: 125px;
+border: 0;
+color: #871f0c;
+margin: 0;
+font-size: 12px;
+padding: 7px 0 5px 10px;
+float: left;
+-webkit-appearance: none;
+box-shadow: 0 0 0 transparent;
+}
+ /* background: url("../images/buscador.png") no-repeat scroll 0 0 transparent;*/
+ margin-bottom: 0;
+ width: 165px;
+ margin: 0;
+ float: right;
+}
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+#block-search-form {
+  float: right;
+  clear: right;
+  margin: 6px 56px 0 0;
+  background: #FFF;
+  border-radius: 5px;
+  border: #871f0c 1px solid;
+}
+
+div.error {
+    background: url("../images/ico-errormessage.png") no-repeat scroll 10px 10px rgba(185,93,80,0.8);
+    border: 1px solid #E7E7E7;
+}
+div.messages {
+    min-height: 30px;
+    padding: 10px 10px 10px 50px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+div.error, .error {
+  color: #4D110D;
+}
+div.status, .ok {
+  color: #F9FBF5;
+}
+div.warning, .warning{
+    color: #532414;
+}
+div.status {
+    background: url("../images/ico-statusmessage.png") no-repeat scroll 10px 10px rgba(157,193,82,0.8);
+    border: 1px solid #E7E7E7;
+}
+div.warning, table tr.warning, div.warning {
+    background: url("../images/ico-warningmessage.png") no-repeat scroll 10px 10px rgba(195,179,127,0.8);
+    border: 1px solid #E7E7E7;
+}

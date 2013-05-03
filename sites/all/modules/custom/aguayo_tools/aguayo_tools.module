@@ -1,0 +1,82 @@
+<?php
+/**
+ * @file
+ * Main file for module aguayo_tools.
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function aguayo_tools_block_info() {
+  $blocks['aguayo_breadcrumb'] = array(
+    'info' => t('aguayo Breadcrumb'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  $blocks['aguayo_logo'] = array(
+    'info' => t('aguayo Logo'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['aguayo_messages'] = array(
+    'info' => t('aguayo Messages'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['aguayo_title'] = array(
+    'info' => t('aguayo Title'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  $blocks['aguayo_sitename'] = array(
+    'info' => t('aguayo site name'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['aguayo_siteslogan'] = array(
+    'info' => t('aguayo site slogan'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function aguayo_tools_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'aguayo_breadcrumb':
+    case 'aguayo_title':
+      $block['content'] = t('Temporary content for block %block, will be altered in hook_process_block() from <a href="http://drupal.org/project/aguayo">aguayo Theme</a>.', array('%block' => $delta));
+      break;
+
+    case 'aguayo_messages':
+      $aguayo = &drupal_static('aguayo');
+      $aguayo['messages_as_block'] = TRUE;
+      $block['content'] = t('This block (%block) should not be invoked directly. It relies on hook_process_page() and hook_process_block() from <a href="http://drupal.org/project/aguayo">aguayo Theme</a>.', array('%block' => $delta));
+      break;
+
+    case 'aguayo_logo':
+      $block['content'] = l(theme('image', array('path' => theme_get_setting('logo'), 'alt' => t('Home'))), '<front>', array('html' => TRUE, 'attributes' => array('title' => t('Home'), 'rel' => 'home', 'id' => 'logo')));
+      break;
+
+    case 'aguayo_sitename':
+      $site_name = variable_get('site_name', FALSE);
+      if ($site_name) {
+        if (drupal_get_title()) {
+          $block['content'] = '<div class="site-name">' . l($site_name, '<front>', array('html' => TRUE, 'attributes' => array('title' => t('Home'), 'rel' => 'home'))) . '</div>';
+        }
+        else {
+          $block['content'] = '<h1 class="site-name">' . l(t('Home') . ' - ' . $site_name, '<front>', array('html' => TRUE, 'attributes' => array('title' => t('Home'), 'rel' => 'home'))) . '</h1>';
+        }
+      }
+      break;
+
+    case 'aguayo_siteslogan':
+      $site_slogan = variable_get('site_slogan', null);
+
+      if ($site_slogan) {
+        $block['content'] = '<span class="site-slogan">' . $site_slogan . '</span>';
+      }
+      break;
+  }
+  return $block;
+}

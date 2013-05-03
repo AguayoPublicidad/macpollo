@@ -1,0 +1,461 @@
+<?php
+/**
+ * @file
+ * Crea páginas y funcionalidad para commerce. 
+ */
+
+define('VID_LOCATIONS', 6);
+define('NID_ORDER_SUCCESS', 17);
+
+/**
+ * Implements hook_prerpocess_hook().
+ */
+function macpollo_commerce_preprocess_page(&$vars) {
+  if (drupal_match_path(current_path(), 'products/*') && $tid = arg(2)) {
+    drupal_set_title(taxonomy_term_load($tid)->name);
+  }
+}
+
+function macpollo_commerce_products_page() {
+  $page = array();
+  $terms = taxonomy_get_tree(3, 0, 1);
+  foreach ($terms as $key => $value) {
+    $class_name = drupal_html_class($value->name);
+    $term = taxonomy_term_load($value->tid);
+    $field_link = field_get_items('taxonomy_term', $term, 'field_link');
+    $field_image = field_get_items('taxonomy_term', $term, 'field_image');
+    $image = theme('image', array('path' => $field_image[0]['uri']));
+    $markup = array(
+      'image' => array(
+        '#markup' => '<div class="image-' . $class_name . '">' . $image . '</div>'
+      ),
+      'description' => array(
+        '#prefix' => '<div class="description-' . $class_name . '">',
+        '#suffix' => '</div>',
+        '#markup' => $value->description,
+      )
+    );
+    $page['element_' . $value->tid]['#markup'] = l(drupal_render($markup), $field_link[0]['value'], array(
+      'attributes' => array(
+        'class' => array('link-' . $class_name)
+      ),
+      'html' => TRUE,
+    ));
+  }
+  return $page;
+}
+
+/**
+ * Implements hook_form_alter()
+ */
+function macpollo_commerce_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
+  switch ($form_id) {
+    case 'views_form_commerce_cart_form_default':
+      if (in_array('company', $user->roles)) {
+        $type_profile = 'company';
+      }
+      else {
+        $type_profile = 'person';
+      }
+      $profile2 = profile2_load_by_user($user, $type_profile);
+      if (!empty($profile2)) {
+        $field_address = field_get_items('profile2', $profile2,'field_shipping_address');
+        $field_location = field_get_items('profile2', $profile2,'field_shipping_location');
+      }
+      $options = array();
+      $locations = taxonomy_get_tree(VID_LOCATIONS);
+      foreach ($locations as $key => $value) {
+        $term = taxonomy_term_load($value->tid);
+        $location_available = field_get_items('taxonomy_term', $term, 'field_city_ships');
+        if (isset($location_available[0]['value']) && $location_available[0]['value']) {
+          $options[$value->tid] = $term->name;
+        }
+      }
+      $form['actions']['checkout']['#access'] = FALSE;
+      $form['section-shipping'] = array(
+        '#prefix' => '<div class="mac-section-shipping">',
+        '#suffix' => '</div>',
+        '#weight' => 300,
+        'title' => array(
+          '#prefix' => '<span class="title-shipping-order">',
+          '#suffix' => '</span>',
+          '#markup' => t('Your order will be shipped to:'),
+        ),
+        'address' => array(
+          '#type' => 'textfield',
+          '#title' => t('Address:'),
+          '#default_value' => isset($field_address[0]['value']) ? $field_address[0]['value'] : '',
+        ),
+        'location' => array(
+          '#prefix' => '<span class="prefix-location">' . t('in') . '</span>',
+          '#type' => 'select',
+          '#options' => $options,
+          '#default_value' => isset($field_location[0]['tid']) ? $field_location[0]['tid'] : '',
+        ),
+        'phone' => array(
+          '#type' => 'textfield',
+          '#title' => t('Contact Phone:'),
+        ),
+        'footer-shipping' => array(
+          '#prefix' => '<div class="footer-shipping"><div class="logo-footer-shipping"></div>',
+          '#suffix' => '</div>',
+          'text1-footer' => array(
+            '#prefix' => '<div class="text1-footer-shipping"><span>' . t('Only domiciles in Bogota and Bucaramanga') . '</span>',
+            '#suffix' => '</div>',
+            '#markup' => t("The prices depend on the weight of the selected products. Before sending an assessor's office will contact you via phone button to confirm the data and the final shipping cost."),
+          ),
+          'text2-footer' => array(
+            '#prefix' => '<div class="text2-footer-shipping">',
+            '#suffix' => '</div>',
+            '#markup' => t("Once confirmed sending the order can not be changed. Your order will be delivered one business day after doing so."),
+          ),
+        ),
+        'send-order' => array(
+          '#type' => 'submit',
+          '#value' => t('Send order'),
+          '#validate' => array(
+            'macpollo_commerce_send_order_validate'
+          ),
+          '#submit' => array(
+            'macpollo_commerce_send_order_submit'
+          ),
+        ),
+      );
+      break;
+  }
+}
+
+/**
+ * Callback validate.
+ */
+function macpollo_commerce_send_order_validate(&$form, &$form_state) {
+  if ($form_state['clicked_button']['#id'] == 'edit-send-order') {
+    $fields = array(
+      0 => 'address',
+      1 => 'location',
+      2 => 'phone',
+    );
+    foreach ($fields as $key => $value) {
+      if (empty($form_state['values'][$value]) || $form_state['values'][$value] == '--') {
+        form_set_error($value, t('The @field field is required.', array(
+          '@field' => t(ucfirst($value))
+        )));
+      }
+    }
+  }
+}
+
+/**
+ * Callback submit.
+ */
+function macpollo_commerce_send_order_submit($form, &$form_state) {
+  global $user, $language;
+  if ($user->uid == 0) {
+    // Redireccionamiento para login:
+    $query = drupal_get_destination();
+    $form_state['redirect'] = array(
+      'login', 
+      array(
+        'query' => $query
+      )
+    );
+  }
+  else {
+    // Enviando mails:
+    $order = commerce_cart_order_load($user->uid);
+    $term = taxonomy_term_load($form_state['values']['location']);
+    $field_mail = field_get_items('taxonomy_term', $term, 'field_mail_by_locality');
+    $params['order'] = $order;
+    $params['address'] = $form_state['values']['address'];
+    $params['location'] = $term->name;
+    $params['phone'] = $form_state['values']['phone'];
+    $to = isset($field_mail[0]['value']) ? $field_mail[0]['value'] : variable_get('site_mail', '');
+    $from = variable_get('site_mail', '');
+    drupal_mail('macpollo_commerce', 'mail-send-order-administrator', $to, $language, $params, $from);
+    $to = isset($order->mail) ? $order->mail : $user->mail;
+    drupal_mail('macpollo_commerce', 'mail-send-order-user', $to, $language, $params, $from);
+    $form_state['redirect'] = array('node/' . NID_ORDER_SUCCESS);
+
+    // Cambiando el estado de la orden y guardando datos de envío:
+    $order->status = 'pending';
+    $data = t('Location') . ': ' . $params['location'] . ', ';
+    $data .= t('Address') . ': ' . $params['address'] . ', ';
+    $data .= t('Phone') . ': ' . $params['phone'];
+    $order->field_data_order[LANGUAGE_NONE][0]['value'] = $data;
+    commerce_order_save($order);
+  }
+}
+
+/**
+ * Callback of drupal_mail()
+ */
+function macpollo_commerce_mail($key, &$message, $params) {
+  global $user, $base_url;
+  $module_path = $base_url . '/' . drupal_get_path('module', 'macpollo_commerce');
+  $line_items = array();
+  $item = 0;
+  $order = $params['order'];
+  $field_lines = field_get_items('commerce_order', $order, 'commerce_line_items');
+  $total = field_get_items('commerce_order', $order, 'commerce_order_total');
+  if (in_array('company', $user->roles)) {
+    $profile2 = profile2_load_by_user($user, 'company');
+    $field_name = field_get_items('profile2', $profile2, 'field_company_name');
+  }
+  else {
+    $profile2 = profile2_load_by_user($user, 'person');
+    $field_name = field_get_items('profile2', $profile2, 'field_user_name');
+  }
+  $username = isset($field_name[0]['value']) ? $field_name[0]['value'] : $user->name;
+
+  // Peronalizando prtes del mensaje:
+  switch ($key) {
+    case 'mail-send-order-administrator':
+      $string_initial = t('Pedido finalizado');
+      $string_greeting = t('Hola!'); 
+      $string_message = t('There is new a order available on the site. Usted puede ver la orden dando click !aqui', array(
+        '@aqui' => l(t('aquí'), $base_url . '/admin/commerce/orders/' . $params['order']->order_id)
+      )) . '<br /><br />' . t('Los artículos que hacen parte del pedido son:');
+      break;
+
+    case 'mail-send-order-user':
+      $string_initial = t('!Su pedido ha sido exitoso!');
+      $string_greeting = t('Hola, @username', array('@username' => ucfirst($username))); 
+      $string_message = t('Gracias por tu pedido. Dentro de las próximas horas un asesor te contactará para confirmar lso artículos del pedido y definir la forma de pago y el envio de los productos. Si deseas modificar el pedido, por favor comunícaselo al asesor.') . '<br /><br />' . t('Los artículos que hacen parte del pedido son:');
+      break;
+
+    case 'mail-send-not-receiving':
+      $mail_not_receiving = TRUE;
+      $comment = $params['comments'];
+      //$field_data = field_get_items('commerce_order', $order, 'field_data_order');
+      //$field_data = explode(',', $field_data[0]['value']);
+      //$locality = explode(':', $field_data[0])
+      $link_order = $base_url . '/admin/commerce/orders/' . $order->order_id;
+      break;
+  }
+
+  if (isset($mail_not_receiving)) {
+    $message['subject'] = t('Product not received');
+    $body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>' . $message['subject'] . '</title>
+<style type="text/css">td img {display: block;}</style>
+</head>
+<body style="font-family:Tahoma, Geneva, sans-serif; font-size:14px;">
+<table border="0" cellpadding="0" cellspacing="0" width="658">
+  <tr>
+   <td><img name="mailcalificacion_r1_c1" src="' . $module_path . '/images/mailmacpollo_r1_c1.jpg" width="658" height="125" border="0" id="mailcalificacion_r1_c1" alt="" /></td>
+  </tr>
+  <tr>
+   <td colspan="5" style="padding:40px; border-left:1px solid #FCE900; border-right:1px solid #FCE900; border-bottom:1px solid #FCE900;"><h1 style="color: #A41B1D; font-weight:500; font-size:36px;">'. t('Lorito - Ha recibido una calificación negativa sobre un pedido') . '</h1>
+      <p style="font-size:18px;"><strong style="font-weight:500;">Pedido No. ' . $order->order_id . '</strong></p>
+        <p style="color:#6E6E6E;  font-size:14px;">'. t('Alguien ha calificado como negativa la experiencia de pedido en Lorito:') . '</p>
+      <p style="margin:0;">
+      <label><strong style="font-weight:500;">' . t('Nombres: ') . '</strong></label>
+      <span style="color:#6E6E6E;">' . $username . '</span></p>
+        <p style="margin:0;">
+          <label><strong style="font-weight:500;">' . t('Pedido No.: ') . '</strong></label>
+        <span style="color:#6E6E6E;">' . $order->order_id . '</span>        </p>
+        <p style="margin:0;">
+          <label><strong style="font-weight:500;">' . t('Comentario: ') . '</strong></label>
+      <span style="color:#6E6E6E;">' . $comment . '</span></p>
+      <p style="color:#A41B1D;"><span style="color:#6E6E6E; margin-bottom:0;">' . t('Para administrar los pedidos, haga clicen el siguiente link:') . '</span></p>
+      <p><a href="' . $link_order . '" style="color:#A41B1D;">' . t('Estilo del link del texto') . '</a></p>
+    </td>
+  </tr>
+  <tr>
+   <td><p style="text-align:center; font-size:11px; color:#ACACAC; padding:20px 40px;">' . t('lorito© 2013 Colombia. Todos los derechos reservados') . '</p></td>
+  </tr>
+</table>
+</body>
+</html>';
+  }
+  else {
+    if (!empty($profile2)) {
+      $field_location = field_get_items('profile2', $profile2,'field_shipping_location');
+    }
+    foreach ($field_lines as $key => $value) {
+      $line_items[] = commerce_line_item_load($value['line_item_id']);
+    }
+    $subject = $message['subject'] = t('New order created');
+    $body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+  <title> ' . $subject . '</title>
+  <style type="text/css">td img {display: block;}</style>
+  </head>
+  <body style="font-family:Tahoma, Geneva, sans-serif; font-size:14px;">
+  <table border="0" cellpadding="0" cellspacing="0" width="659">
+    <tr>
+     <td colspan="5"><img name="Template_maling_user_r1_c1" src="' . $module_path . '/images/mailmacpollo_r1_c1.jpg" width="659" height="139" border="0" id="Template_maling_user_r1_c1" alt="" /></td>
+    </tr>
+    <tr>
+     <td colspan="5" style="padding:40px; border-left:1px solid #FCE900; border-right:1px solid #FCE900;"><h1 style="color: #A41B1D; font-weight:500; font-size:36px;">' . $string_initial . '</h1>
+  <p style="font-size:18px;"><strong style="font-weight:500;">' . $string_greeting . '</strong></p>
+      <p style="color:#6E6E6E;  font-size:14px;">' . $string_message . '</p>';
+      foreach ($line_items as $key => $value) {
+        $product = commerce_product_load_by_sku($value->line_item_label);
+        $commerce_total = field_get_items('commerce_line_item', $value, 'commerce_total');
+        $body .= '<p style="margin-bottom:0;"><strong style="font-weight:500;">' . $product->title . '</strong></p>
+      <p style="margin:0;"><strong style="font-weight:500;">' . t('Codigo del producto:') . '</strong> ' . $product->sku . '</p>
+      <p style="color:#A41B1D; margin-top:0;"><strong style="font-weight:500;">' . t('Precio:') . '</strong> $' . $commerce_total[0]['amount'] . ' ' . $commerce_total[0]['currency_code'] . '</p>' ;
+      }
+    $body .= '</tr>
+    <tr>
+     <td><img name="Template_maling_user_r3_c1" src="' . $module_path . '/images/mailmacpollo_r3_c1.jpg" width="659" height="145" border="0" id="Template_maling_user_r3_c1" alt="" /></td>
+    </tr>
+    <tr>
+     <td colspan="5"><p style="text-align:center; font-size:11px; color:#ACACAC; padding:20px 40px;">' . t('Este boletín es un servicio de www.lorito.com.co. Para asegurar la entrega de este boletín en tu correo, por favor agrega informacion@lorito.com.co a tu correo electrónico.') . '<br />
+       <br />
+      ' . t('lorito© 2013 Colombia. Todos los derechos reservados') . '</p></td>
+    </tr>
+  </table>
+  </body>
+  </html>';
+  }
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed';
+  $message['body'][] = $body;
+}
+
+/**
+ * Implements hook_node_view()
+ */
+function macpollo_commerce_node_view($node, $view_mode, $langcode) {
+  global $user;
+  if ($node->nid ==  NID_ORDER_SUCCESS) {
+    $order_id = db_select('commerce_order', 'co')
+      ->fields('co', array('order_id'))
+      ->condition('status', 'pending')
+      ->condition('uid', $user->uid)
+      ->orderBy('changed', 'desc')
+      ->execute()
+      ->fetchField();
+    if (empty($order_id)) {
+      drupal_goto('<front>');
+    }
+    else {
+      $node->content['order_id'] = array(
+        '#prefix' => '<div class="order-id-succes"><span class="label-order-id">' . t('You order number is:')  . '</span>',
+        '#suffix' => '</div>',
+        '#markup' => '<span class="number-order">' . $order_id . '</span>'
+      );
+    }
+  }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function macpollo_commerce_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'macpollo_commerce') . '/views',
+  );
+}
+
+/**
+ * Formulario para volver a realizar un pedido ya hecho.
+ */
+function macpollo_commerce_reorder_form($form, $form_state, $order_id = NULL) {
+  $form['order_id'] = array(
+    '#type' => 'hidden',
+    '#value' => $order_id
+  );
+  $form['button'] = array(
+    '#type' => 'submit',
+    '#value' => t('Make this order again'),
+  );
+  
+  return $form;
+}
+
+/**
+ * Submit callback.
+ */
+function macpollo_commerce_reorder_form_submit($form, $form_state) {
+  if (isset($form_state['values']['order_id'])) {
+    global $user;
+    // Elimina la orden actual del carrito:
+    if ($order_cart = commerce_cart_order_load($user->uid)) {
+      commerce_cart_order_empty($order_cart);
+    }
+
+    // Creando nueva orden:  
+    $line_items = array();
+    $order = commerce_order_load($form_state['values']['order_id']);
+    $field_lines = field_get_items('commerce_order', $order, 'commerce_line_items');
+    foreach ($field_lines as $key => $value) {
+      $line_item = commerce_line_item_load($value['line_item_id']);
+      if ($line_item->type == 'product') {
+        $product = commerce_product_load_by_sku($line_item->line_item_label);
+        $new_line_item = commerce_product_line_item_new($product, $line_item->quantity);
+        commerce_cart_product_add($user->uid, $new_line_item, TRUE);
+      }
+    }
+  }
+}
+
+/**
+ *  Formuario para evaluar la recepción del pédido.
+ */
+function macpollo_commerce_receiving_order_form($form, $form_state, $order_id = NULL) {
+  $form['order_id'] = array(
+    '#type' => 'hidden',
+    '#value' => $order_id
+  );
+  $form['main_title'] = array(
+    '#prefix' => '<div class="title-evaluate-order">',
+    '#suffix' => '</div>',
+    '#markup' => t('Evaluate your order'),
+  );
+  $form['receiving_order'] = array(
+    '#type' => 'radios',
+    '#required' => TRUE,
+    '#options' => array(
+      1 => t('Yes'),
+      0 => t('No'),
+    ),
+    '#title' => t('Did you receive your shipment to satisfaction?'),
+  );
+  $form['comments'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Enter your comments'),
+  );
+  $form['button'] = array(
+    '#type' => 'submit',
+    '#value' => t('Send'),
+  );
+  return $form;
+}
+
+/**
+ * Submit callback.
+ */
+function macpollo_commerce_receiving_order_form_submit($form, $form_state) {
+  if (isset($form_state['values']['order_id'])) {
+    $changes = FALSE;
+    $order = commerce_order_load($form_state['values']['order_id']);
+    if (isset($form_state['values']['receiving_order'])) {
+      $order->field_receiving_order[LANGUAGE_NONE][0]['value'] = $form_state['values']['receiving_order'];
+      $changes = TRUE;
+      if (!$form_state['values']['receiving_order']) {
+        // Enviando mail cuando el pedido no fue recibido a satisfacción:
+        $params['order'] = $order;
+        $params['comments'] = $form_state['values']['comments'];
+        $to = 'ingjogarzon@gmail.com';//isset($field_mail[0]['value']) ? $field_mail[0]['value'] : variable_get('site_mail', '');
+        $from = variable_get('site_mail', '');
+        drupal_mail('macpollo_commerce', 'mail-send-not-receiving', $to, $language, $params, $from);
+      }
+    }
+    if (isset($form_state['values']['comments'])) {
+      $order->field_comments_order[LANGUAGE_NONE][0]['value'] = $form_state['values']['comments'];
+      $changes = TRUE;
+    }
+    if ($changes) {
+      commerce_order_save($order);
+    }
+  }
+}

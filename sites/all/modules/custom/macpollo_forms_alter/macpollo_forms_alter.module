@@ -1,0 +1,176 @@
+<?php
+/**
+ * @file
+ * Altera formularios del sitio.
+ */
+
+/**
+ * Implements hook_form_alter()
+ */
+function macpollo_forms_alter_form_alter(&$form, &$form_state, $form_id) {
+  $form_cart = FALSE;
+  if (strpos($form_id, 'commerce_cart_add_to_cart_form') !== FALSE) {
+    $form_cart = TRUE;
+  }
+
+  switch ($form_id) {
+    case $form_cart:
+      $form['submit']['#value'] = t('Make order');
+      break;
+
+    case 'recipe_node_form':
+      _macpollo_form_recipe_alter($form, $form_state);
+      break;
+  }
+}
+
+/**
+ * Recipe form alter
+ */
+function _macpollo_form_recipe_alter(&$form, &$form_state) {
+  // Language.
+  $form['language']['#access'] = FALSE;
+  // People.
+  $form['field_people_number'][LANGUAGE_NONE][0]['value']['#maxlength'] = 2;
+
+  if ($form_state['storage']['step'] == 'step_1') {
+    $form['actions']['submit']['#access'] = FALSE;
+  }
+
+  if ($form_state['storage']['step'] == 'step_2') {
+    $form['step1_vals'] = array(
+      '#prefix' => '<div class="macpollo-step1-values">',
+      '#suffix' => '</div>',
+    );
+    if (isset($form_state['values']['title']) && $form_state['values']['title']) {
+      $form['step1_vals']['title'] = array(
+        '#prefix' => '<div class="macpollo-step1-value val-title-recipe"><h2 class="recepe-step-title">',
+        '#suffix' => '</h2></div>',
+        '#markup' => $form_state['values']['title'],
+      );
+    }
+    $form['step1_vals']['st1'] = array(
+      '#prefix' => '<div class="macpollo-step1-content-vals">',
+      '#suffix' => '</div>',
+    );
+    if (isset($form_state['values']['field_people_number'][LANGUAGE_NONE][0]['value']) && $form_state['values']['field_people_number'][LANGUAGE_NONE][0]['value']) {
+      $people_number = $form_state['values']['field_people_number'][LANGUAGE_NONE][0]['value'];
+      $form['step1_vals']['st1']['num_perons'] = array(
+        '#prefix' => '<div class="macpollo-num-persons">',
+        '#suffix' => '</div>',
+      );
+      $form['step1_vals']['st1']['num_perons']['items'] = array(
+        '#prefix' => '<div class="macpollo-num-persons-items">',
+        '#suffix' => '</div>',
+        '#markup' => is_numeric($people_number) ? _macpollo_forms_alter_items_list($people_number) : '',
+      );
+      $form['step1_vals']['st1']['num_perons']['num'] = array(
+        '#prefix' => '<div class="macpollo-num-persons-num">',
+        '#suffix' => '</div>',
+        '#markup' => format_plural($people_number, '1 person', '@count persons')
+      );
+    }
+
+    // Tiempo de receta.
+    if (isset($form_state['values']['field_time'][LANGUAGE_NONE][0]['value']) && $form_state['values']['field_time'][LANGUAGE_NONE][0]['value']) {
+      $recipe_time = ($form_state['values']['field_time'][LANGUAGE_NONE][0]['value'] > 60) ? t('Over an hour') : t('Time: @time', array('@time' => $form_state['values']['field_time'][LANGUAGE_NONE][0]['value']));
+      $form['step1_vals']['st1']['time'] = array(
+        '#prefix' => '<div class="macpollo-step1-value val-time-recipe">',
+        '#suffix' => '</div>',
+        '#markup' => $recipe_time,
+      );
+    }
+
+    $form['step1_vals']['st1']['ingre'] = array(
+      '#prefix' => '<div class="macpollo-step1-value-ingredients">',
+      '#suffix' => '</div>',
+    );
+    $form['step1_vals']['st1']['ingre']['label'] = array(
+      '#prefix' => '<div class="macpollo-ingredients"><span class="ingredients-content">',
+      '#suffix' => '</span></div>',
+      '#markup' => t('Ingredients'),
+    );
+
+    // Producto.
+    if (isset($form_state['values']['field_ingredient_macpollo']['und'][0]['target_id']) && $form_state['values']['field_ingredient_macpollo']['und'][0]['target_id']) {
+      $nid = $form_state['values']['field_ingredient_macpollo']['und'][0]['target_id'];
+      $p_title = _macpollo_forms_alter_get_node_title($nid);
+      $link_path = 'node/' . $nid;
+      $form['step1_vals']['st1']['ingre']['product'] = array(
+        '#prefix' => '<div class="macpollo-step1-value val-product-recipe">',
+        '#suffix' => '</div>',
+        '#markup' => l(t($p_title), $link_path, array('attributes' => array('target' => '_blank'))),
+      );
+    }
+
+    // Ingredientes.
+    if (isset($form_state['values']['field_other_ingredients']['und']) && $form_state['values']['field_other_ingredients']['und']) {
+      $values = $form_state['values']['field_other_ingredients']['und'];
+      array_pop($values);
+      foreach ($values as $key => $value) {
+        if (!empty($value['value'])) {
+          $form['step1_vals']['st1']['ingre'][$key]['ingred'] = array(
+            '#prefix' => '<div class="macpollo-ingredients ingredient-' . $key . '">',
+            '#suffix' => '</div>',
+            '#markup' => $value['value'],
+          );
+        }
+      }
+    }
+
+    // Imagen.
+    if (isset($form_state['values']['field_recipe_image']['und'][0]['fid']) && $form_state['values']['field_recipe_image']['und'][0]['fid']) {
+      $fid = $form_state['values']['field_recipe_image']['und'][0]['fid'];
+      $image_file = file_load($fid);
+      $img_vars = array(
+        'style_name' => 'img_300x200',
+        'path' => $image_file->uri,
+        'attributes' => array('class' => array('recipe-prev-image'))
+      );
+      $form['step1_vals']['image'] = array(
+        '#prefix' => '<div class="macpollo-step1-values image-value">',
+        '#suffix' => '</div>',
+      );
+      $form['step1_vals']['image']['img'] = array(
+        '#prefix' => '<div class="macpollo-step1-values image-value-img">',
+        '#suffix' => '</div>',
+        '#markup' => theme('image_style', $img_vars),
+      );
+    }
+  }
+
+  // Prefijo numeroco al campo multiple.
+  foreach ($form['field_preparation'][LANGUAGE_NONE] as $key => $item) {
+    if (is_array($item) && is_numeric($key)) {
+      $form['field_preparation'][LANGUAGE_NONE][$key]['value']['#field_prefix'] = '<span class="pre-num">' . ($item['#delta'] + 1) . '</span>';
+    }
+  }
+}
+
+/**
+ * Items list empty
+ */
+function _macpollo_forms_alter_items_list($count = 0) {
+  if ($count > 0) {
+    for ($i = 0; $i < $count; $i++) {
+      $items[] = array(
+        'data' => '',
+      );
+    }
+    return theme('item_list', array('items' => $items, 'type' => 'ul'));
+  }
+  else {
+    return '';
+  }
+}
+
+/**
+ * Get nid title.
+ */
+function _macpollo_forms_alter_get_node_title($nid) {
+  $query = db_select('node', 'n')
+    ->fields('n', array('title'))
+    ->condition('n.nid', $nid);
+  $result = $query->execute()->fetchField();
+  return $result;
+}

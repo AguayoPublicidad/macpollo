@@ -1,0 +1,102 @@
+/*GENERALIDADES FOOTER*/
+#footer .section-wrapper, html{
+    background: #A41B1B;
+}
+#footer  li {
+  margin-bottom: 2px;
+}
+.info-site p{
+margin: 3px 0;
+color: rgba(254,221,100,1);
+font-size: 12px;
+}
+.image-post-content {
+    background: url("../images/bottom-back.png") no-repeat center 0 transparent;
+    padding-top: 100px;
+}
+#block-menu-menu-footer {
+  float: left;
+}
+/*FOOTER MENU*/
+#footer  ul{
+  list-style: none outside none;
+  margin: 0;
+  padding: 0;
+}
+#block-menu-menu-footer .content > ul >  li {
+padding-right: 25px;
+float: left;
+border-right: 1px solid #F5E002;
+margin-right: 30px;
+}
+#footer .content > ul >  li.expanded > a{
+color: #EECF03;
+display: block;
+margin-right: 16px;
+  height: 70px;
+display: table-cell;
+vertical-align: middle;
+float: left;
+}
+#footer .content > ul >  li > span {
+float: left;
+margin-right: 15px;
+}
+#footer .content > ul >  li.expanded > ul {
+float: left;
+}
+#footer ul.menu li a:hover {
+  color: #D0C7B5;
+}
+#footer .content > ul >  li li > a{
+  color: #FFF;
+  font-weight: 200;
+}
+
+#block-info-site{
+float: right;
+width: 24%;
+text-align: center;
+color: #F3E05E;
+font-size: 13px;
+line-height: 1;
+position: relative;
+top: -32px;
+}
+.link-register a {
+  background: url("../images/link-registro-footer.png") no-repeat 0 0 transparent;
+  font-size: 0;
+width: 220px;
+height: 40px;
+display: block;
+
+}
+#footer .section-inner {
+  padding: 25px 20px;
+}
+.info-site {
+margin-top: 10px;
+float: left;
+width: 100%;
+}
+#block-macpollo-blocks-macpollo-copyright,
+#block-macpollo-blocks-macpollo-user-register {
+  float: right;
+  text-align: center;
+}
+#block-macpollo-blocks-macpollo-copyright p {
+color: rgba(247,217,101,1);
+font-weight: 200;
+position: relative;
+top: -20px;
+margin: 0px;
+}
+.macpollo-user-register-limk a{
+background: url("../images/link-registro-footer.png") no-repeat 0 0 transparent;
+width: 220px;
+height: 40px;
+display: block;
+font-size: 0;
+position: relative;
+top: -32px;
+}

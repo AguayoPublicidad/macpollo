@@ -1,0 +1,4 @@
+name = Macpollo Forms Alter
+description = Altera formularios del sitio.
+core = 7.x
+package = MacPollo

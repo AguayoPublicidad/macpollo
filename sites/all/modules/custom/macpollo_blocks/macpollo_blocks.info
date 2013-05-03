@@ -1,0 +1,4 @@
+name = MacPollo Blocks
+description = General site blocks
+core = 7.x
+package = MacPollo

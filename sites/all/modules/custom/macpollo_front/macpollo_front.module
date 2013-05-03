@@ -1,0 +1,116 @@
+<?php
+/**
+ * @file
+ * Modulo front page site
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function macpollo_front_menu() {
+  $items['macpollo-front'] = array(
+    'title' => 'Macpollo front',
+    'page callback' => 'macpollo_front_page',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Front page callback
+ */
+function macpollo_front_page() {
+  return '';
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function macpollo_front_block_info() {
+  $blocks['macpollo_front_order'] = array(
+    'info' => t('MacPollo Front order'),
+    'cache' => DRUPAL_NO_CACHE
+  );
+  $blocks['macpollo_front_stores'] = array(
+    'info' => t('MacPollo Front Stores'),
+    'cache' => DRUPAL_NO_CACHE
+  );
+  $blocks['macpollo_link_awards'] = array(
+    'info' => t('MacPollo Link Awards'),
+    'cache' => DRUPAL_CACHE_GLOBAL
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function macpollo_front_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'macpollo_front_order':
+      $block['content'][] = macpollo_front_order_block();
+      break;
+
+    case 'macpollo_front_stores':
+      $block['content'][] = macpollo_front_stores_block();
+      break;
+
+    case 'macpollo_link_awards':
+      $block['content'][] = macpollo_front_link_awards();
+      break;
+
+  }
+  return $block;
+}
+
+/**
+ * Block oder content
+ */
+function macpollo_front_order_block() {
+  $content = array();
+  $content['msg'] = array(
+    '#prefix' => '<div class="banner-macpollo-stores order-online-block-home">',
+    '#suffix' => '</div>',
+  );
+  $link_online = l(t('ON-LINE >>'), '<front>', array('attributes' => array('class' => array('link-bg-red'))));
+  $content['msg']['content'] = array(
+    '#prefix' => '<div class="banner-content">',
+    '#suffix' => '</div>',
+    '#markup' => t('<h2><span class="text-order">Make your order</span>!link</h2><p>We will contact you by phone to verify your address</p>', array('!link' => $link_online)),
+  );
+  return $content;
+}
+
+/**
+ * Block stores content
+ */
+function macpollo_front_stores_block() {
+  $content = array();
+  $content['msg'] = array(
+    '#prefix' => '<div class="banner-macpollo-stores link-stores-block-home">',
+    '#suffix' => '</div>',
+  );
+  $content['msg']['link'] = array(
+    '#prefix' => '<div class="banner-content">',
+    '#suffix' => '</div>',
+    '#markup' => l(t('<h2><span class="text-order">Locate your store</span><span class="link-red">nearest</span></h2>'), 'stores', array('html' => TRUE)),
+  );
+  return $content;
+}
+
+/**
+ * Link awards
+ */
+function macpollo_front_link_awards() {
+  $content = array();
+  $content['link'] = array(
+    '#prefix' => '<div class="award-link-content">',
+    '#suffix' => '</div>',
+    '#markup' => l(t('Awards'), ''),
+  );
+  return $content;
+}

@@ -1,0 +1,72 @@
+; Theme Info -----------------------------------------------------------------
+; required information about the theme
+
+name = Aguayo Publicidad
+description = "Subtheme Custom"
+core = 7.x
+engine = phptemplate
+base theme = aguayo
+
+; Stylesheets  ---------------------------------------------------------------
+; We use [screen] instead of [all] to avoid browser styles affecting
+; other media types. IE stylesheets are loaded through template.php
+
+; stylesheets[screen][] = css/yourcss.css
+
+stylesheets[all][] = 'css/content.css'
+stylesheets[all][] = 'css/font.css'
+stylesheets[all][] = 'css/forms.css'
+stylesheets[all][] = 'css/global.css'
+stylesheets[all][] = 'css/html.css'
+stylesheets[all][] = 'css/maintenance.css'
+stylesheets[all][] = 'css/skinr.css'
+stylesheets[all][] = 'css/footer.css'
+stylesheets[all][] = 'css/header.css'
+stylesheets[all][] = 'css/home.css'
+stylesheets[all][] = 'css/layout.css'
+stylesheets[all][] = 'css/menu.css'
+
+scripts[] = js/macpollo_forms.js
+
+; Regions --------------------------------------------------------------------
+; these content regions are available for block placement
+; some are special hidden regions: page_top, page_bottom, and help
+
+regions[content] = Content
+regions[pre_content] = Pre Content
+regions[post_content] = Post Content
+
+regions[header] = Header First
+regions[header_second] = Header Second
+regions[header_second_b] = Header Second Branding
+regions[header_third] = Header Third Navigation
+
+regions[footer] = Footer First
+regions[footer_second] = Footer Second
+regions[footer_second_b] = Footer Second B
+regions[footer_third] = Footer Third
+
+regions[sidebar_first]   = Sidebar first
+regions[sidebar_second]  = Sidebar second
+
+regions[preface_first]   = Preface First
+regions[preface_second]  = Preface Second
+
+regions[postscript_first] = Postscript First
+regions[postscript_second] = Postscript Second
+
+regions[help] = Help
+regions[page_top] = Page Top
+regions[page_bottom] = Page Bottom
+
+; Options --------------------------------------------------------------------
+; these are the checkboxes that are available on the theme settings page.
+
+; these are the stock options
+features[] = logo
+;features[] = name
+;features[] = slogan
+features[] = node_user_picture
+features[] = comment_user_picture
+features[] = comment_user_verification
+features[] = favicon

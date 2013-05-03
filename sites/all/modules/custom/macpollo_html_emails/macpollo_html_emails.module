@@ -1,0 +1,15 @@
+<?php
+/**
+ * @file
+ * Beautifies drupal system email through HTML
+ */
+
+/**
+ * Implements hook_mail_alter()
+ */
+function macpollo_html_emails_mail_alter(&$message) {
+  $message['headers']['MIME-Version'] = '1.0';
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed';
+  $message['headers']['Content-Transfer-Encoding'] = '8Bit';
+  $message['headers']['X-Mailer'] = 'Drupal';
+}

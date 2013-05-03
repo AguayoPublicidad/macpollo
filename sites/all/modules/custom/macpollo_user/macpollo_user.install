@@ -1,0 +1,12 @@
+<?php
+/**
+ * @file
+ * Changes the weight of the module.
+ */
+
+/**
+ * Implements hook_enable().
+ */
+function macpollo_user_enable() {
+  db_query("UPDATE {system} SET weight = 200 WHERE name = 'macpollo_user'");
+}

@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * Cambiar el por defecto en Drupal a algo diferente a Ingles es un problema
+ * Los textos de menu, bloques, views, etc etc, que se ingrean por configuración
+ * toman el idioma predeterminado del sitio. Si los ingresamos en ingles
+ * y se cambia el idioma por defecto a español, los textos quedan como si fueran
+ * en el nuevo idioma seleccionado.
+ *
+ * Para evitar problemas, se deja el idioma por defecto siempre in Ingles
+ * y creamos este proveedor de lenguaje que nos da el lenguaje que escojamos.
+ *
+ * Este proveedor debe ser el último de la lista, pero debe estar antes del de
+ * "por defecto"
+ */
+
+
+/**
+ * Implements hook_language_negotiation_info().
+ */
+function macpollo_language_language_negotiation_info() {
+  return array(
+    'macpollo_language' => array(
+      'callbacks' => array(
+        'language' => 'macpollo_language_provider_callback'
+      ),
+      'description' => t("Determine the language from the browser's language settings."),
+      'file' => drupal_get_path('module', 'macpollo_language') . '/macpollo_language.module',
+      'name' => t('MacPollo'),
+      'description' => t('Set the language to spanish.'),
+    ),
+  );
+}
+
+function macpollo_language_provider_callback($languages) {
+  return 'es';
+}

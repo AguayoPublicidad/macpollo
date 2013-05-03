@@ -1,0 +1,4 @@
+name = Macpollo Language
+description = Set the default language to Spanish
+core = 7.x
+package = MacPollo

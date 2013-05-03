@@ -1,0 +1,341 @@
+<?php
+/**
+ * @file
+ * Modulo para cargar tiendas en mapa de google
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function macpollo_stores_menu() {
+  $items['stores'] = array(
+    'title' => t('Stores'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('macpollo_stores_location_form'),
+    'access arguments' => array('access content'),
+  );
+  $items['shops/popup/%node'] = array(
+    'title' => 'Info node',
+    'page callback' => 'macpollo_stores_popup',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function macpollo_stores_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'addressfield' && $plugin == 'format') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Store form.
+ */
+function macpollo_stores_location_form($form, &$form_state, $city = NULL, $zone = NULL, $nid = NULL) {
+
+  $form = array(
+    '#prefix' => '<div id="macpollo-stores-location-form">',
+    '#suffix' => '</div>',
+  );
+
+  // $field = field_info_field('field_address');
+  // $instance = field_info_instance('node', 'field_address', 'store');
+
+  $country = 'CO';
+  $zone = FALSE;
+  $cities = macpollo_stores_get_cities();
+  if (isset($form_state['values']['store_city'])) {
+    $city = $form_state['values']['store_city'];
+  }
+  elseif(isset($_GET['city']) && $_GET['city']) {
+    $city = $_GET['city'];
+  }
+  if (!in_array($city, $cities)) {
+    $city = FALSE;
+  }
+
+  if (isset($form_state['values']['store_zone'])) {
+    $zone = $form_state['values']['store_zone'];
+  }
+  $zones = array(t('Select your zone'));
+  if ($city) {
+    $zones = macpollo_stores_get_cities_zones($country, $city);
+    if (!in_array($zone, $zones)) {
+      $zone = FALSE;
+    }
+  }
+
+  $form['filters'] = array(
+    '#prefix' => '<div id="macpollo-stores-filters" class="macpollo-map-filters">',
+    '#suffix' => '</div>',
+    '#weigth' => 1,
+  );
+  $form['filters']['label'] = array(
+    '#prefix' => '<div class="macpollo-map-filters-label">',
+    '#suffix' => '</div>',
+    '#markup' => t('Filter by'),
+  );
+
+  $form['filters']['store_city'] = array(
+    '#type' => 'select',
+    '#title' => t('City'),
+    '#default_value' => isset($_GET['city']) ? $_GET['city'] : 0,
+    '#options' => isset($cities) ? $cities : array(),
+    '#ajax' => array(
+      'callback' => 'macpollo_stores_ajax',
+      'wrapper' => 'macpollo-stores-location-form',
+    ),
+  );
+
+  $form['filters']['store_zone'] = array(
+    '#type' => 'select',
+    '#title' => t('Zone'),
+    '#default_value' => 0,
+    '#options' => isset($zones) ? $zones : array(),
+    '#ajax' => array(
+      'callback' => 'macpollo_stores_ajax',
+      'wrapper' => 'macpollo-stores-location-form',
+    ),
+  );
+
+  $form['map'] = array(
+    '#prefix' => '<div id ="mapa-macpollo-stores" style="height: 560px; width: 600px;">GEO',
+    '#suffix' => '</div>',
+    '#markup' => 'Mapa',
+  );
+
+
+  // Abrir nodos tipo: Store.
+  $query = new EntityFieldQuery();
+
+  $query->entityCondition('entity_type', 'node', '=')
+    ->propertyCondition('type', 'store')
+    ->fieldCondition('field_address', 'country', $country);
+
+
+  if ($city) {
+    $query->fieldCondition('field_address', 'locality', $city);
+  }
+  if ($zone) {
+    $query->fieldCondition('field_address', 'sub_administrative_area', $zone);
+  }
+
+  if (isset($store) && $store) {
+    $query->fieldCondition('field_address', 'thoroughfare', '%' . $store . '%', 'LIKE');
+  }
+
+  if ($nid) {
+    $query->propertyCondition('nid', $nid);
+  }
+  $result = $query->execute();
+  $nodes = array();
+  if ($result['node']) {
+    $nodes = node_load_multiple(array_keys($result['node']));
+  }
+  global $base_path;
+  $ico = $base_path . drupal_get_path('module', 'macpollo_stores') . '/images/ico-tienda.png';
+  $points = array();
+  $nodes_items = array();
+  foreach ($nodes as $nid => $node) {
+    $nodes_items[$nid] = node_view($node, 'full');
+    if (isset($nodes_items[$nid]['field_glocation']['#items'][0])) {
+      if (is_array($nodes_items[$nid]['field_glocation']['#items'][0])) {
+        $points[$country]['locality']['point'][] = $nodes_items[$nid]['field_glocation']['#items'][0];
+        $points[$country]['locality']['nids'][] = $nid;
+        $points[$country]['locality']['icon'][] = $ico;
+      }
+    }
+  }
+
+  // $form['#attached']['js'][] = drupal_get_path('module', 'macpollo_stores') . '/js/macpollo_stores.js';
+  $form['#attached']['js'][] = drupal_get_path('module', 'macpollo_stores') . '/js/macpollo_storesmap.js';
+  $form['#attached']['js'][] = array(
+    'data' => 'http://maps.googleapis.com/maps/api/js?sensor=false&language=es',
+    'type' => 'external',
+  );
+
+  $form['#attached']['js'][] = array(
+    'data' => array('macPolloStores' => array('points' => $points)),
+    'type' => 'setting',
+  );
+
+  require_once DRUPAL_ROOT . '/includes/locale.inc';
+
+  $list_country = country_get_list();
+
+  $settings = array(
+    'country' => $country,
+    'country_des' => $list_country[$country],
+    'city' => $city,
+  );
+
+  $form['#attached']['js'][] = array(
+    'data' => array('macPolloStores' => array('stores' => $settings)),
+    'type' => 'setting',
+  );
+
+  // if ($city) {
+    // if ($zone) {
+    //   $nids_stores = macpollo_stores_get_stores_by_city_zone($city, $zone);
+    // }
+    // else {
+    //   $nids_stores = macpollo_stores_get_stores_by_city_zone($city);      
+    // }
+  $links_stores = macpollo_stores_links_stores($nodes);
+  $stores_list = theme('item_list', array('items' => $links_stores));
+  $form['filters']['stores'] = array(
+    '#prefix' => '<div class="macpollo-stores-stores-links">',
+    '#suffix' => '</div>',
+    '#markup' => $stores_list,
+  );
+  // }
+
+  return $form;
+}
+
+/**
+ * Ajax form
+ */
+function macpollo_stores_ajax($form, $form_state) {
+  return $form;
+}
+
+/**
+ * Generar nodo de la tienda seleccionada
+ */
+function macpollo_stores_popup($node) {
+  $output = "";
+  if ($node) {
+    $output = node_view_multiple(array($node), 'stores_popup');
+  }
+  drupal_json_output(drupal_render($output));
+}
+
+/**
+ * Funcion para obtener ciudases segun país
+ */
+function macpollo_stores_get_cities($country = 'CO', $city = NULL) {
+  $locality = "";
+  $query = db_select('field_data_field_address', 'f')
+    ->condition('field_address_country', $country);
+  $query->fields('f', array('field_address_locality'));
+  $query->condition('field_address_locality', '%' . db_like($city) . '%', 'LIKE');
+  $results = $query->execute();
+
+  $items = array();
+  foreach ($results as $result) {
+    if ($result) {
+      $items[$result->field_address_locality] = $result->field_address_locality;
+    }
+  }
+  asort($items);
+  array_unshift($items, t('Select your city'));
+  return $items;
+}
+
+/**
+ * Funcion para obtener zonas segun ciudad
+ */
+function macpollo_stores_get_cities_zones($country = 'CO', $city = NULL, $zone = NULL) {
+  $locality = "";
+  $query = db_select('field_data_field_address', 'f')
+    ->condition('field_address_country', $country);
+  $query->fields('f', array('field_address_sub_administrative_area'));
+  $query->condition('field_address_locality', '%' . db_like($city) . '%', 'LIKE');
+  $results = $query->execute();
+  $items = array();
+
+  foreach ($results as $result) {
+    if ($result && !is_null($result->field_address_sub_administrative_area)) {
+      $items[$result->field_address_sub_administrative_area] = $result->field_address_sub_administrative_area;
+    }
+  }
+
+  asort($items);
+  array_unshift($items, t('Select your zone'));
+  return $items;
+}
+
+
+/**
+ * Funcion para obtener tiendas de una ciudad
+ */
+function macpollo_stores_get_stores_by_city_zone($city, $zone = NULL) {
+  $locality = "";
+  $query = db_select('node', 'n');
+  $query->leftJoin('field_data_field_address', 'f', 'f.entity_id = n.nid');
+  $query->condition('f.field_address_locality', $city);
+  if ($zone) {
+    $query->condition('f.field_address_sub_administrative_area', $zone);
+  }
+  $query->fields('n', array('nid'));
+  $results = $query->execute();
+  $items = array();
+  foreach ($results as $result) {
+    $items[$result->nid] = $result->nid;
+  }
+  return $items;
+}
+
+/**
+ * Funcion para obtener tiendas de una ciudad
+ */
+function macpollo_stores_links_stores($nodes) {
+  foreach ($nodes as $key => $node) {
+    if ($node->type == 'store') {
+      $address = field_get_items('node', $node, 'field_address');
+      // Zona.
+      if ($address[0]['sub_administrative_area']) {
+        $content[$key]['zone'] = array(
+          '#prefix' => '<div class="macpollo-stores-list-zone">',
+          '#suffix' => '</div>',
+          '#markup' => $address[0]['sub_administrative_area']
+        );
+      }
+      // Dirección.
+      if ($address[0]['thoroughfare']) {
+        $content[$key]['thoroughfare'] = array(
+          '#prefix' => '<div class="macpollo-stores-list-address">',
+          '#suffix' => '</div>',
+          '#markup' => $address[0]['thoroughfare']
+        );
+      }
+      $location = field_get_items('node', $node, 'field_glocation');
+      $links[] = l(drupal_render($content[$key]), "shops/" . $address[0]['country'] . "/" . $address[0]['locality'] . "/" . $node->nid,
+        array(
+          'attributes' => array(
+            'class' => array('macpollo-stores-see-map'),
+            'data-country' => $address[0]['country'],
+            'data-city' => $address[0]['locality'],
+            'data-nid' => $node->nid,
+            'data-lat' => $location[0]['lat'],
+            'data-lng' => $location[0]['lng'],
+          ),
+        'html' => TRUE,
+        )
+      );
+    }
+  }
+  return $links;
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function macpollo_stores_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['stores_popup'] = array(
+    'label' => t('Window Map'),
+    'custom settings' => TRUE,
+  );
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function macpollo_stores_form_store_node_form_alter(&$form, &$form_state, $form_id) {
+  $form['field_address']['und'][0]['street_block']['premise']['#title'] = t('Phone');
+}

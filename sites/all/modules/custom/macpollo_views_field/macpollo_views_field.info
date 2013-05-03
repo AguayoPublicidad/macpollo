@@ -1,0 +1,8 @@
+name = MacPollo Views field.
+description = Customs fields for views, by MacPollo.
+package = MacPollo
+dependencies[] = views
+core = 7.x
+; Views handlers
+files[] = views/handlers/macpollo_views_field_handler_field.inc
+files[] = views/handlers/macpollo_views_field_handler_area.inc

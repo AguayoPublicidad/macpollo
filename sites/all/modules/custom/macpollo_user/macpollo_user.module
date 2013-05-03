@@ -1,0 +1,175 @@
+<?php
+/**
+ * @file
+ * User manage module
+ */
+
+define('NID_TERMS_AND_CONDS', 13);
+define('PERSON_ROLE', 4);
+define('COMPANY_ROLE', 5);
+define('VID_LOCATION', 6);
+
+/**
+ * Implements hook_init().
+ */
+function macpollo_user_init() {
+  $patterns = <<<PATH
+user/register
+PATH;
+  $path = current_path();
+  if (drupal_match_path($path, $patterns)) {
+    drupal_goto('person/register');
+  }
+  // User.
+  if (user_is_anonymous() && drupal_match_path($path, 'user')) {
+    drupal_goto('login');
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function macpollo_user_menu() {
+  $items['login'] = array(
+    'title' => 'Login',
+    'page callback' => 'macpollo_user_login_page',
+    'access arguments' => array('access content'),
+    'file' => 'pages/macpollo_user_login.page.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function macpollo_user_form_user_login_alter(&$form, &$form_state, $form_id) {
+  module_load_include('inc', 'macpollo_user', 'macpollo_user');
+  _macpollo_user_form_login_alter($form, $form_state);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function macpollo_user_form_user_register_form_alter(&$form, &$form_state, $form_id) {
+  module_load_include('inc', 'macpollo_user', 'macpollo_user');
+  _macpollo_user_form_register_alter($form, $form_state);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function macpollo_user_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+  module_load_include('inc', 'macpollo_user', 'macpollo_user');
+  _macpollo_user_form_profile_alter($form, $form_state);
+}
+
+/**
+ * Implements hook_element_info_alter().
+ */
+function macpollo_user_element_info_alter(&$type) {
+  $type['date_popup']['#process'][] = 'macpollo_user_date_popup_element_process';
+}
+
+/**
+ * Process function for date_popup.
+ * Change title for each element
+ */
+function macpollo_user_date_popup_element_process($element, $form_state, $form) {
+  if (isset($element['#field']['field_name'])) {
+    $campo_fecha = $element['#field']['field_name'];
+    switch ($campo_fecha) {
+      // Se cambia label solo para fecha nacimiento.
+      case 'field_user_birthday':
+        switch (end($element['#parents'])) {
+          case 'value':
+            $element['date']['#title'] = t('Birthday');
+            break;
+        }
+        break;
+    }
+  }
+  return $element;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function macpollo_user_menu_alter(&$items) {
+  $items['person']['type'] = MENU_CALLBACK;
+  $items['company']['type'] = MENU_CALLBACK;
+  $items['user/password']['type'] = MENU_CALLBACK;
+  $items['person/password']['type'] = MENU_CALLBACK;
+  $items['person/register']['type'] = MENU_CALLBACK;
+  $items['company/password']['type'] = MENU_CALLBACK;
+  $items['company/register']['type'] = MENU_CALLBACK;
+  $items['user/register']['type'] = MENU_CALLBACK;
+  $items['user/%user/edit/person']['type'] = MENU_CALLBACK;
+  $items['user/%user/edit/company']['type'] = MENU_CALLBACK;
+  $items['user/%user_category/edit/profile']['access callback'] = FALSE;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function macpollo_user_block_info() {
+  $blocks['links_type_register'] = array(
+    'info' => t('User links user type register'),
+    'cache' => DRUPAL_CACHE_GLOBAL
+  );
+  $blocks['user_information'] = array(
+    'info' => t('User information'),
+    'cache' => DRUPAL_CACHE_GLOBAL
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function macpollo_user_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'links_type_register':
+      module_load_include('inc', 'macpollo_user', 'macpollo_user');
+      $block['content'][] = _macpollo_user_links_type_register();
+      break;
+
+    case 'user_information':
+      module_load_include('inc', 'macpollo_user', 'include/macpollo_user_infor');
+      $block['content'][] = _macpollo_user_information();
+      break;
+  }
+  return $block;
+}
+
+/**
+ * User # contents
+ */
+function _macpollo_user_num_contents($uid, $content_type) {
+  $result = db_select('node', 'n')
+      ->fields('n', array('nid'))
+      ->condition('n.uid', $uid)
+      ->condition('n.type', $content_type)
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+  return $result;
+}
+
+/**
+ * Get locations
+ */
+function macpollo_user_get_shipping_locations() {
+  $options = array();
+  $options['_none'] = '-' . t('None') . '-';
+  $locations = taxonomy_get_tree(VID_LOCATION);
+  foreach ($locations as $key => $value) {
+    $term = taxonomy_term_load($value->tid);
+    $location_available = field_get_items('taxonomy_term', $term, 'field_city_ships');
+    if (isset($location_available[0]['value']) && $location_available[0]['value']) {
+      $options[$value->tid] = $term->name;
+    }
+  }
+  return $options;
+}

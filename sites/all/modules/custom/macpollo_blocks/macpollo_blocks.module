@@ -1,0 +1,130 @@
+<?php
+/**
+ * @file
+ * Site custom blocks
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function macpollo_blocks_block_info() {
+  $blocks['macpollo_copyright'] = array(
+    'info' => t('Copyright'),
+    'cache' => DRUPAL_CACHE_GLOBAL
+  );
+  $blocks['macpollo_user_register'] = array(
+    'info' => t('User register link'),
+    'cache' => DRUPAL_NO_CACHE
+  );
+  $blocks['macpollo_product_types'] = array(
+    'info' => t('Product Types'),
+    'cache' => DRUPAL_NO_CACHE
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function macpollo_blocks_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'macpollo_copyright':
+      $block['content'][] = macpollo_blocks_copyright();
+      break;
+
+    case 'macpollo_user_register':
+      $block['content'][] = macpollo_blocks_register_link();
+      break;
+
+    case 'macpollo_product_types':
+      $block['content'][] = macpollo_blocks_product_types();
+      break;
+
+  }
+  return $block;
+}
+
+/**
+ * Copyright
+ */
+function macpollo_blocks_copyright() {
+  $content = array();
+  $content['contn'] = array(
+    '#prefix' => '<div class="macpollo-copyright">',
+    '#suffix' => '</div>',
+  );
+  $content['contn']['copy'] = array(
+    '#prefix' => '<p>',
+    '#suffix' => '</p>',
+    '#markup' => t('MacPollo S.A @year', array('@year' => date('Y')))
+  );
+  $content['contn']['msg'] = array(
+    '#prefix' => '<p>',
+    '#suffix' => '</p>',
+    '#markup' => t('All rights reserved.')
+  );
+  return $content;
+}
+
+/**
+ * Register link
+ */
+function macpollo_blocks_register_link() {
+  $content = array();
+  // if (user_is_anonymous()) {
+  $content['link'] = array(
+    '#prefix' => '<div class="macpollo-user-register-limk">',
+    '#suffix' => '</div>',
+    '#markup' => l(t('Register'), 'person/register'),
+  );
+  // }
+  return $content;
+
+}
+
+/**
+ * Products type
+ */
+function macpollo_blocks_product_types() {
+  $current_product_type = NULL;
+  $content = array();
+  if ($node = menu_get_object()) {
+    $field_product_type = field_get_items('node', $node, 'field_product_type');
+    $current_product_type = $field_product_type[0]['tid'];
+  }
+  elseif ($term = taxonomy_term_load(arg(2))) {
+    $current_product_type = $term->tid;
+  }
+  $items = array();
+  $terms = taxonomy_get_tree(3, 0, 1);
+  if ($current_product_type) {
+    foreach ($terms as $key => $value) {
+      if ($value->tid == $current_product_type) {
+        $class = array('link-' . drupal_html_class($value->name), 'active');
+      }
+      else {
+        $class = array('link-' . drupal_html_class($value->name));
+      }
+      $term = taxonomy_term_load($value->tid);
+      $attributes = array(
+        'attributes' => array(
+          'class' => $class,
+        ),
+      );
+      $field_page_presentation = field_get_items('taxonomy_term', $term, 'field_page_presentation');
+      $items[] = l(i18n_taxonomy_term_name($term), 'products/' . $field_page_presentation[0]['value'] . '/' . $value->tid, $attributes);
+    }
+    $content[0]['list'] = array(
+      '#prefix' => '<div class="list-product-types">',
+      '#suffix' => '</div>',
+      '#markup' => theme('item_list', array(
+        'items' => $items,
+        'type' => 'ul'
+      ))
+    );
+  }
+  return $content;
+}

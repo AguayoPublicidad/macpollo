@@ -1,0 +1,4 @@
+name = HTML emails
+description = Beautifies drupal system email through HTML
+core = 7.x
+package = MacPollo

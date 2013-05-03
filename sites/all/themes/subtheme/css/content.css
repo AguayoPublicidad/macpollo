@@ -1,0 +1,1155 @@
+﻿.not-front #main #content {
+	padding: 20px 80px;
+}
+.user-information  {
+margin: 30px 0 0;
+float: left;
+}
+
+.tabs, .info-percentages, .user-register-links, .user-information-links,
+.list-product-types   {
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+.tabs li, .links-register-type, .user-information-link, .list-product-types li {
+	display: inline-block;
+	margin: 0 8px;
+    *display: inline;
+    *zoom: 1;
+}
+.tabs li a, .user-register-links a, .user-information-link a,
+.list-product-types li a{
+    background-color: rgba(178,151,98,0.8);
+    border-radius: 5px 5px 5px 5px;
+    color: #FFFFFF;
+    display: block;
+    font-size: 20px;
+    padding: 10px 40px;
+}
+.tabs li a:hover, .tabs li a.active , .user-register-links a:hover, 
+.user-register-links a.active, .user-information-links a:hover,
+.user-information-links a.active, .list-product-types li a:hover, 
+.list-product-types li a.active {
+     background-color: rgba(141,34,14,0.9);
+    text-decoration: none;
+    color: #FFFFFF;
+}
+h1#page-title  {
+    background: url("../images/bg-h1.png") no-repeat scroll center 0 transparent;
+    padding: 25px;
+    text-align: center;
+}
+.user-information-links {
+    margin-bottom: 30px;
+}   
+/********home****/
+.front #page-title, .front .region-header-second-b  {
+	display: none;
+}
+.front #main #content {
+	padding: 0px 52px;
+}
+.views-slideshow-controls-bottom {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	z-index: 20;
+}
+.view-slider {
+	position: relative;
+}
+.views-slideshow-pager-field-item {
+	margin: 3px;
+	float: left;
+}
+.views-slideshow-pager-field-item .views-content-counter {
+	font-size: 0;
+	background: red;
+	width: 5px;
+	height: 5px;
+	border-radius: 15px;
+	border: 3px solid #000;
+	cursor: pointer;
+}
+.views-slideshow-pager-field-item.active .views-content-counter {
+	background: #000;
+}
+.block-macpollo-front {
+	float: left;
+}
+.front .region-content {
+    background: url("../images/bg-home.jpg") no-repeat scroll center bottom transparent;
+    overflow: hidden;
+}
+.banner-macpollo-stores {
+	background: url("../images/bg-banner.png") no-repeat center 0 transparent;
+	float: left;
+	width: 355px;
+	margin: 8px 5px;
+	height: 150px;
+	overflow: hidden;
+}
+.order-online-block-home .banner-content {
+	background: url("../images/ico-pedido-online-home.png") no-repeat 20px center transparent;
+	padding: 30px 20px 25px 135px;
+}
+.link-stores-block-home .banner-content {
+	background: url("../images/ico-tiendas-home.png") no-repeat 30px center transparent;
+	padding: 40px 20px 40px 102px;
+}
+.banner-content h2 {
+	margin-bottom: 0;
+}
+.banner-content p {
+	line-height: 1;
+	margin: 0;
+}
+.text-order {
+	display: block;
+	text-transform: uppercase;
+	color: #000;
+	line-height: 1;
+	font-weight: 700;
+	font-size: 20px;
+	margin-top: 10px;
+}
+.link-stores-block-home .text-order {
+	font-size: 24px;
+}
+.link-stores-block-home .link-red, .link-stores-block-home .link-red:hover {
+	font-size: 26px;
+	text-transform: uppercase;
+	font-weight: 700;
+	text-decoration: none;
+	cursor: pointer;
+	color: #9f3223;
+}
+.link-stores-block-home a {
+	text-decoration: none;
+}
+.link-bg-red, .link-bg-red:hover {
+	text-decoration: none;
+	cursor: pointer;
+	background: rgba(166,65,47,1);
+	color: #fff;
+	font-size: 20px;
+	padding: 0px 15px 0 5px;
+	border-radius: 8px;
+	font-weight: 600;
+}
+.award-link-content a, .award-link-content a:hover {
+background: #A81C1E;
+color: #FFF;
+padding: 6px 15px;
+text-transform: uppercase;
+border-radius: 10px 10px 0 0px;
+display: block;
+box-shadow: -2px -1px 5px #382410;
+font-size: 0.9em;
+}
+#block-macpollo-front-macpollo-link-awards  {
+float: right;
+margin: 137px 20px 0 0;
+}
+/***** my account***/
+
+.inner-left {
+	float: left;
+}
+.inner-right  {
+	float: right;
+}
+.img-my-account {
+	margin-right: 30px;
+}
+#my-account {
+	width: 80%;
+	margin: 30px auto;
+	overflow: hidden;
+}
+.columnx3 {
+	text-align: center;
+}
+.columnx3 .col {
+	width: 28%;
+	display: inline-block;
+	margin: 2%;
+}
+.recipes h2 {
+	border-bottom: 1px solid #EE8E00;
+	padding-bottom: 5px;
+	font-weight: 700;
+	width: 93%;
+	margin: 20px auto;
+}
+.columnx3 .col h3 {
+	margin-bottom: 6px;
+	text-align: left;
+	font-weight: 700;
+}
+.btn-recipe {
+	margin: 2px 0 0 10px;
+}
+.btn-recipe a {
+	display: block;
+	font-size: 0;
+	width: 22px;
+	height: 22px;
+}
+.btn-recipe a.recipe-unpublished {
+	background: url("../images/ico-check-not-ok.png") no-repeat center 0 transparent;
+}
+.btn-recipe a.recipe-published {
+	background: url("../images/ico-check-ok.png") no-repeat center 0 transparent;
+}
+.info-percentages{
+	background: rgba(178, 151, 98, 0.3);
+	border-radius: 2px;
+	margin: 15px 0;
+	text-align: left;
+	overflow: hidden;
+	list-style: none;
+
+}
+.info-percentages li  {
+	border-right: 1px solid #fff;
+	padding: 5px 20px 5px 20px;
+	float: left;
+	margin: 2px;
+}
+.info-percentages li a {
+	color: rgba(7,1,1,1);
+	font-weight: 700;
+	font-size: 14px;
+	float: left;
+	line-height: 35px;
+	margin-right: 3px;
+}
+.info-percentages li.last{
+	border: 0;
+}
+.info-percentages li span {
+	color: rgba(173,27,35,1);
+	font-size: 30px;
+	float: right;
+	font-weight: 400;
+}
+#my-account h2{
+	font-size: 18px;
+	font-weight: 700;
+	margin-bottom: 5px;
+}
+#my-account h1 {
+	font-family: 'Lato', sans-serif;
+	font-style: normal;
+	color: #9f3223;
+	font-size: 30px;
+	margin-bottom: 4px;
+}
+#user-buttons .btn-red{
+	float: left;
+
+}
+.btn-red input[type="submit"], .btn-red input[type="submit"]:hover   {
+	background-position: 10px center;
+	float: left;
+}
+.btn-red.btn-order-submit  input[type="submit"]{
+	background-image: url("../images/btn-order-reicpe-.png");
+	padding: 8px 10px 8px 40px;
+}
+.btn-red.publish-recipes-submit  input[type="submit"]{
+	background-image: url("../images/btn-publish-recipe.png");
+	padding: 8px 10px 8px 30px;
+}
+#user-buttons .btn-red.update-info-submit {
+	margin: 0 10px;
+}
+
+/***** tiendas ***/
+#macpollo-stores-filters .form-item label {
+	display: none;
+}
+#macpollo-stores-filters .form-item, #macpollo-stores-filters .macpollo-map-filters-label {
+    float: left;
+    margin: 5px 20px 5px 0;
+}
+.macpollo-stores-stores-links  {
+    clear: both;
+    float: left;
+    width: 180px;
+}
+.macpollo-stores-stores-links  ul {
+    list-style: none outside none;
+    margin: 20px 0 0 10px;
+    padding-left: 0;
+}
+#macpollo-stores-filters .macpollo-map-filters-label {
+    font-size: 1.1em;
+    margin: 8px 15px 8px 10px;
+}
+.macpollo-stores-stores-links  ul  li {
+    border-bottom: 2px dashed #DBC0B4;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+}
+.macpollo-stores-stores-links  ul  li a {
+    color: #010000;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+.macpollo-stores-stores-links  ul  li a .macpollo-stores-list-zone {
+	font-weight: 700; 
+}
+#macpollo-stores-location-form {
+	position: relative;
+	min-height: 630px;
+}
+#mapa-macpollo-stores{
+    border: 3px solid #FEDD00;
+    border-radius: 15px 15px 15px 15px;
+    position: absolute;
+    right: 0;
+    top: 60px;
+    width: 570px !important;
+}
+/******* contacto******/
+form > div > .form-wrapper > .form-item, .form-item-pass > .form-item, 
+fieldset > .fieldset-wrapper > div, .webform-component.form-item,
+form > div > .form-item, .node-recipe-form > div > .form-wrapper,
+#user-profile-form > div >  .form-wrapper  {
+    float: left;
+    margin: 0px 4%;
+    width: 42%;
+}
+#user-profile-form > div > #edit-account.form-wrapper,
+form > div > .form-wrapper > .form-item.form-type-radios,
+form > div > .form-wrapper > .form-item.form-type-checkbox,
+form > div > .form-wrapper.field-name-field-preparation, 
+form > div > .form-item.form-item-comments,
+form > div > .form-item.form-item-receiving-order {
+    margin: 0;
+    width: 100%;
+}
+
+form .form-item.webform-component-textarea{
+width: 97%;
+}
+#user-profile-form > div > .form-wrapper.field-name-field-document {
+    margin: 0;
+    width: 19%;
+}
+#user-profile-form > div > .form-wrapper.field-name-field-document-type {
+    margin: 0 2% 0 4%;
+    width: 19%;
+}
+.field-name-field-document-type  .aguayo-select-wrapper {
+    min-width: 150px;
+}
+.field-name-field-document-type select {
+    width: 115%;
+}
+#main form .form-actions  {
+    clear: both;
+    float: left;
+    margin: 20px 0;
+    overflow: hidden;
+    text-align: center;
+    width: 100%;
+}
+.webform-datepicker{
+		background: url("../images/calendar.png") no-repeat right center transparent;
+}
+input.webform-calendar{
+	opacity: 0;
+}
+.form-type-radio input[type="radio"]  {
+
+ 	display: none;
+ }
+.form-type-radio label {
+    background: url("../images/radio.png") no-repeat scroll right center transparent;
+    cursor: pointer;
+    margin: 5px 0;
+    padding-right: 25px;
+}
+ .form-type-radio.active-r label {
+ 	background: url("../images/radio-active.png") no-repeat right center transparent;
+ }
+/****** registro*******/
+.macpollo-login-user-form-login, .macpollo-register-user {
+    float: left;
+    left: auto;
+    width: 50%;
+}
+.page-login  .block-system-main > .content {
+    margin: 30px auto;
+    overflow: hidden;
+    width: 80%;
+}
+.wrapper-brown{
+    background: none repeat scroll 0 0 #781B12;
+    color: #FFFFFF;
+    font-size: 1.3em;
+    margin-right: 2px;
+    padding: 15px 10px;
+    text-align: center;
+    text-transform: uppercase;
+}
+.macpollo-login-user.wrapper-brown{
+	    border-radius: 10px 0 0 10px;
+}
+.macpollo-register-user.wrapper-brown {
+    border-radius: 0 10px 10px 0;
+    display: block;
+    width: 94%;
+}
+.macpollo-login-user-form form .form-item {
+    float: none;
+    margin: 0 auto;
+    width: 70%;
+}
+.macpollo-login-user-msg{
+    color: #000000;
+    margin: 40px auto 0;
+    width: 70%;
+}
+.macpollo-login-user-form label {
+    color: #000000;
+    font-size: 15px;
+    font-weight: normal;
+}
+.user-form-login-pass {
+	text-align: center;
+}
+.macpollo-login-user-form a {
+    display: block;
+    font-size: 0.9em;
+    font-weight: bold;
+    margin: 10px auto 20px;
+}
+.macpollo-register-msg {
+    border-left: 1px solid #D49E8A;
+    clear: both;
+    float: left;
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 70px;
+    width: 95%;
+    color: #000;
+}
+.macpollo-register-link {
+    border-left: 1px solid #D49E8A;
+    float: left;
+    padding: 15px 0 80px;
+    text-align: center;
+    width: 95%;
+}
+/****register***/
+.form-wrapper > .form-item.form-item-pass{
+    clear: both;
+    float: none;
+    margin: 0;
+    width: 100%;
+}
+form > div > .form-wrapper.field-name-field-other-ingredients  {
+    clear: both;
+    float: none;
+    margin: 4%;
+    width: 92%;
+}
+.fieldset-wrapper > div {
+
+}
+fieldset > .fieldset-wrapper > div.date-no-float {
+    margin: 0;
+    width: 97%;
+} 
+.form-wrapper > .form-item.form-type-select {
+    float: none;
+    margin: 5px 0;
+    width: 99%;
+}
+.container-inline-date .form-item .form-item, .container-inline-date .date-padding {
+    float: none;
+    padding: 0;
+}
+.container-inline-date .form-item, .container-inline-date .form-item input {
+    margin: 2px 0 4px;
+    width: 94%;
+}
+.field-name-field-user-gender > .form-item > label {
+    opacity: 0;
+    margin: 0;
+}
+.container-inline-date .form-item .form-item {
+    background: url("../images/calendar.png") no-repeat scroll right 35px transparent;
+    padding-right: 40px;
+}
+.container-inline-date > .form-item {
+    margin-bottom: 0;
+    margin-right: 0;
+}
+.field-name-field-user-birthday legend, .form-item-pass .description, .date-padding .description {
+	display: none;
+}
+
+.form-radios > .form-item  {
+    float: left;
+    margin: 0 20px 0 0;
+}
+.page-person.not-front #header-second .section,
+.page-company.not-front #header-second .section,
+.node-type-webform.not-front #header-second .section  {
+    background: url("../images/top-back-form.png") no-repeat scroll center 0 transparent;
+}
+.page-person #main .section,
+.page-company #main .section,
+.node-type-webform #main .section{
+    background: url("../images/center-back-form.png") repeat-y scroll center 0 transparent;
+}
+.page-person .image-post-content,
+.page-company .image-post-content,
+.node-type-webform  .image-post-content{
+    background: url("../images/bottom-back-form.png") no-repeat scroll center 0 transparent;
+    padding-top: 100px;
+}
+.page-person.not-front #main #content,
+.page-company.not-front #main #content,
+.node-type-webform.not-front #main #content  {
+    padding: 20px 150px;
+}
+.page-company.not-front #header-second .section,
+.page-person.not-front #header-second .section,
+.node-type-webform.not-front #header-second .section  {
+    margin: 0 auto;
+    width: 820px;
+}
+/*****recipes****/
+.node-recipe-form > div > .form-item.form-item-title, .node-recipe-form > div >  .field-name-field-recipe-image {
+	width: 94%;
+}
+.node-recipe-form > div >  .field-name-field-people-number {
+	clear: left;
+}
+div.image-preview {
+    float: right;
+    padding: 0 0 0 7px;
+}
+div.image-preview img {
+background: #FFFFFF;
+}
+div.image-widget-data{
+    float: left;
+    width: 438px;
+}
+.image-widget.form-managed-file  {
+    clear: left;
+    float: left;
+    margin-right: 15px;
+}
+.node-recipe-form > div > .form-wrapper.field-name-field-recipe-image {
+    background: url("../images/img-preview.jpg") no-repeat scroll 445px 37px transparent;
+    margin: 20px 4%;
+    min-height: 145px;
+}
+input[type="file"] {
+    width: 305px;
+}
+.node-recipe-form > div > .form-wrapper.field-name-field-recipe-image label {
+	width: 100%;
+}
+.description {
+    clear: left;
+    font-size: 0.75em;
+}
+/****tipo de productos****/
+.view-product-types .views-row  {
+background: url("../images/bg-cafe.png") repeat scroll 0 0 transparent;
+border-radius: 10px 10px 10px 10px;
+float: left;
+margin: 2%;
+padding: 40px 15px 20px;
+text-align: center;
+width: 25%;
+min-height: 340px;
+}
+.view-product-types .views-row .views-field-name a {
+    display: block;
+    font-size: 0;
+    height: 119px;
+    margin: 0 auto 5px;
+    width: 171px;
+}
+.view-product-types .views-row-1 .views-field-name a {
+	background: url("../images/img-product-pollo-fresco.png") no-repeat scroll 0 0 transparent;
+}
+.view-product-types .views-row-2 .views-field-name a {
+	background: url("../images/img-product-pollo-consumir.png") no-repeat scroll 0 0 transparent;
+}
+.view-product-types .views-row-3 .views-field-name a {
+	background: url("../images/img-product-salsamenteria.png") no-repeat scroll 0 0 transparent;
+}
+.view-product-types .views-row .views-field-field-image .field-content {
+    display: table-cell;
+    height: 150px;
+    vertical-align: middle;
+    width: 200px;
+}
+/***** productos******/
+.view-products  {
+overflow: hidden;
+margin: 1%;
+width: 92%;
+margin: auto;
+}
+.view-products .col {
+float: left;
+width: 23%;
+margin: 1%;
+text-align: center;
+}
+.view-products .col .views-field-title a {
+font-weight: 600;
+font-size: 0.9em;
+line-height: 1;
+margin-top: 10px;
+display: block;
+}
+/***** perfil *****/
+.user-data.p-img  {
+    float: left;
+    text-align: center;
+    width: 30%;
+}
+.user-information-data-info  {
+    float: right;
+    width: 70%;
+}
+.user-information-data  {
+/*    margin: auto;
+    width: 85%;*/
+}
+.user-infor-name {
+    color: #A1251F;
+    font-size: 1.9em;
+    margin: 15px 0 5px;
+    line-height: 1;
+}
+.user-infor-welco {
+    color: #A1251F;
+    font-size: 1.2em;
+    font-weight: 500;
+    margin: 0;
+}
+.user-information-contents {
+    background: url("../images/bg-cafe.png") repeat scroll 0 0 transparent;
+    border-radius: 5px 5px 5px 5px;
+    overflow: hidden;
+    float: left;
+}
+.user-contents  {
+    border-right: 1px solid #FFFEFA;
+    color: #000000;
+    float: left;
+    font-size: 0.9em;
+    font-weight: 400;
+    margin: 5px 0;
+    padding: 8px 30px;
+}
+.user-contents.user-recipes  {
+    border-right: 0;
+}
+.text-red {
+    color: #A1251F;
+    font-size: 2em;
+    font-weight: 400;
+    line-height: 1;
+}
+.user-contents-links {
+    float: left;
+    margin: 15px 0;
+    overflow: hidden;
+}
+.user-contents-links .btn-red {
+    float: left;
+    margin-right: 10px;
+    padding: 0;
+}
+.user-contents-links .btn-red a {
+     color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 20px;
+    display: block;
+    text-decoration: none;
+}
+.user-contents-links .btn-red.user-link-order a {
+    background: url("../images/btn-order-reicpe-.png") no-repeat scroll 10px center transparent;
+    padding: 8px 20px 8px 38px;
+}
+.user-contents-links .btn-red.user-link-order a {
+    background: url("../images/btn-order-reicpe-.png") no-repeat scroll 10px center transparent;
+    padding: 8px 20px 8px 38px;
+}
+.user-contents-links .btn-red.user-link-precipe  a,  .btn-red.user-link-precipe a {
+    background: url("../images/btn-publish-recipe.png") no-repeat scroll 10px center transparent;
+    padding: 8px 20px 8px 32px;
+}
+.list-product-types li a {
+    font-size: 1.2em;
+    background-position: 10px center;
+    background-repeat: no-repeat;
+}
+.list-product-types li a.link-fresh-chicken  {
+    background-image: url("../images/ico-pollo-fresco.png");
+    padding: 11px 20px 11px 67px;
+}
+.list-product-types li a.link-chicken-ready-to-consume {
+    background-image: url("../images/ico-listo-para-consumir.png");
+    padding: 11px 20px 11px 55px;
+}
+.list-product-types li a.link-delicatessen {
+    background-image: url("../images/ico-salsamentaria.png");
+    padding: 11px 20px 11px 67px;
+}
+.list-product-types ul {
+    list-style: none;
+    padding: none;
+}
+
+/***** producto****/
+.node-product {
+width: 88%;
+margin: auto;
+}
+.node-product  .form-type-select  {
+    width: 65%;
+}
+.node-product > .content > div  {
+width: 45%;
+float: right;
+}
+.node-product > .content > div.commerce-product-field-field-image {
+float: left;
+margin-right: 10%;
+width: 45%;
+}
+.node-product > .content > div.commerce-product-field-field-image img {
+    box-shadow: 1px 1px 8px #64635F;
+}
+.commerce-add-to-cart input[type="submit"] {
+      background: none no-repeat scroll right center rgb(198,59,56);
+  background: url("../images/ico-carro.png")  no-repeat scroll 10px center, -moz-linear-gradient(rgb(198,59,56)50%, rgb(132,40,39));
+  background: url("../images/ico-carro.png")  no-repeat scroll 10px center, -webkit-linear-gradient(rgb(198,59,56)50%, rgb(132,40,39));
+  background: url("../images/ico-carro.png")  no-repeat scroll 10px center, -o-linear-gradient(rgb(198,59,56)50%, rgb(132,40,39));
+  background: url("../images/ico-carro.png")  no-repeat scroll 10px center, linear-gradient(rgb(198,59,56)50%, rgb(132,40,39));
+  padding: 8px 20px 8px 38px;
+  margin: 15px 0 10px 0;
+}
+.commerce-add-to-cart input[type="submit"]:hover {
+    background: url("../images/ico-carro.png") no-repeat scroll 10px center rgba(74,73,73,1);
+   background: url("../images/ico-carro.png") no-repeat scroll 10px center, -moz-linear-gradient(rgba(74,73,73,1))50%, rgba(17,17,17,1));
+  background: url("../images/ico-carro.png") no-repeat scroll 10px center, -webkit-linear-gradient(rgba(74,73,73,1)50%, rgba(17,17,17,1));
+  background: url("../images/ico-carro.png") no-repeat scroll 10px center, -o-linear-gradient(rgb(198,59,56)50%, rgba(17,17,17,1));
+  background: url("../images/ico-carro.png") no-repeat scroll 10px center, linear-gradient(rgb(198,59,56)50%, rgba(17,17,17,1));
+}
+/**** cesta pedido*****/
+table {
+    width: 100%
+}
+table th {
+    color: #8E201D;
+    font-weight: 500;
+    padding-bottom: 10px;
+
+}
+.page-cart table tr{
+border-bottom: 1px solid #C4C4B3;
+position: relative;
+}
+.group1-commerce-cart  {
+position: relative;
+height: 100px;
+padding-top: 20px;
+}
+table td .title-product{
+font-weight: 500;
+font-size: 1.3em;
+position: absolute;
+top: -30px;
+}
+.page-cart  table td {
+    vertical-align: middle;
+    padding: 0px 0 50px 0;
+    text-align: center;
+}
+table th.views-field-nothing {
+    width: 55%;
+    text-align: left;
+    font-size: 0;
+}
+.group1-commerce-cart .image-product {
+    float: left;
+    margin-right: 10px;
+}
+.group1-commerce-cart .sku-product {
+float: left;
+color: #000;
+font-weight: 500;
+margin: 30px 0 0 10px;
+font-size: 0.95em;
+}
+.views-field-edit-quantity input[type="text"] {
+width: 40px;
+text-align: center;
+}
+.commerce-line-item-views-form input.delete-line-item:before { 
+content:"(x) ";
+}
+.commerce-line-item-views-form input.delete-line-item,
+.commerce-line-item-views-form input.delete-line-item:hover {
+font-size: 0.8em;
+padding: 1px 6px;
+background: none;
+color: #9d2f21;
+text-decoration: underline;
+}
+.views-field-commerce-total.price{
+color: #9d2f21;
+font-weight: 500;
+font-size: 1.25em;
+padding-right: 10px;
+text-align: right;
+}
+th.views-field-commerce-total{
+text-align: right;
+padding-right: 10px;
+}
+.line-item-summary {
+float: right;
+font-size: 1.4em;
+color: #9D2F21;
+font-weight: 500;
+}
+.order-text-condl {
+    float: left;
+}
+.mac-section-shipping {
+    clear: both;
+    padding: 20px 25px;
+}
+.prefix-location{
+float: left;
+margin: 34px 15px 0 0;
+color: #A7201F;
+font-weight: 400;
+}
+.mac-section-shipping > .form-item.form-type-select.form-item-location {
+    margin-top: 30px;
+}
+
+.mac-section-shipping > .form-item  {
+float: left;
+margin: 0 20px 0 0;
+width: 200px;
+}
+table tr.views-row-last {
+border-bottom: 2px solid #9D2F21;
+}
+.link-add-products {
+position: relative;
+top: -35px;
+font-weight: 400;
+font-size: 0.9em;
+text-decoration: underline;
+}
+.text-no-includes, .mac-section-shipping > .form-item label {
+color: #000;
+font-weight: 600;
+font-size: 0.8em;
+}
+.text2-footer-shipping {
+color: #000;
+font-weight: 400;
+font-size: 0.9em; 
+}
+.title-shipping-order {
+display: block;
+width: 100%;
+margin: 0;
+color: #A7201F;
+font-weight: 400;
+}
+.footer-shipping {
+clear: left;
+margin: 50px 0 0 0;
+float: left;
+width: 100%;
+}
+.text1-footer-shipping  {
+background: url("../images/img-admiracion.png") no-repeat scroll 0 center transparent;
+float: left;
+width: 40%;
+color: #000;
+font-weight: 400;
+font-size: 0.9em;
+padding-left: 80px;
+}
+.text1-footer-shipping span {
+    color: #A7201F;
+    display: block;
+    margin-bottom: 5px;
+}
+.text2-footer-shipping {
+float: right;
+width: 37%;
+}
+#edit-send-order {
+clear: right;
+float: right;
+margin: -20px 80px 20px 80px;
+}
+.line-item-summary .line-item-total-label {
+font-weight: normal;
+margin-right: 10px;
+}
+.line-item-total  {
+margin: 15px 0;
+}
+.commerce-line-item-views-form {
+width: 94%;
+margin: auto;
+}
+/******recipes***/
+.view-user-recipes .views-row {
+float: left;
+margin: 10px;
+}
+.view-user-recipes {
+width: 88%;
+margin: 30px auto;
+overflow: hidden;
+clear: both;
+}
+.user-recipes-publish-status {
+font-size: 14px;
+color: #000;
+margin: 5px 0;
+font-weight: 400;
+}
+.user-recipes-publish-status > span {
+width: 20px;
+height: 20px;
+float: right;
+}
+.recipe-unpublish {
+    background: url("../images/ico-check-not-ok.png") no-repeat scroll 0 center transparent;
+} 
+.recipe-publish {
+    background: url("../images/ico-check-ok.png") no-repeat scroll 0 center transparent;
+} 
+.view-user-recipes .view-header h2{
+font-weight: 700;
+font-size: 28px;
+border-bottom: 1px solid #EB8B00;
+margin: 10px;
+}
+.view-user-recipes .view-footer  {
+clear: both;
+float: right;
+} 
+.page-user-recipes h1.title {
+    display: none;
+}
+.view-user-recipes .views-row h3 {
+    margin-bottom: 5px;
+}
+.node-recipe-form  {
+    margin: auto;
+    width: 82%;
+}
+.tabledrag-toggle-weight-wrapper {
+    display: none;
+}
+.macpollo-num-persons-items ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.macpollo-num-persons-items ul li {
+    background: url("../images/ico-persona.png") no-repeat scroll 0 center transparent;
+    float: left;
+    height: 18px;
+    width: 20px;
+}
+.macpollo-step1-content-vals {
+    color: #000000;
+    float: left;
+    font-size: 0.9em;
+    width: 50%;
+}
+.macpollo-step1-values.image-value {
+    float: right;
+}
+.macpollo-num-persons-num {
+    float: left;
+    margin-left: 10px;
+    text-transform: uppercase;
+}
+.val-time-recipe {
+    background: url("../images/ico-reloj.png") no-repeat scroll 0 center transparent;
+    float: left;
+    margin: 10px 0;
+    overflow: hidden;
+    padding: 10px 0 5px 30px;
+    width: 100%;
+}
+.macpollo-step1-value-ingredients {
+    clear: both;
+}
+/*** registro exitoso***/
+#node-17 {
+    background: url("../images/img-resgistro-exitoso.png") no-repeat scroll 0 0 transparent;
+    min-height: 300px;
+    padding: 80px 0 0 430px;
+    width: 290px;
+}
+.order-id-succes {
+    color: #000000;
+    font-size: 0.9em;
+    font-weight: 400;
+    margin: 20px 0;
+}
+.number-order{
+    color: #971D11;
+    display: block;
+    font-size: 2.1em;
+    font-weight: 500;
+}
+/*** salud***/
+.view-salud, .node-type-article .node-article {
+    margin: auto;
+    width: 80%;
+} 
+.node-type-article .node-article .field-name-field-image  {
+    text-align: center;
+    margin: 20px 0;
+}
+.view-salud .views-field-field-image {
+    float: left;
+    margin-right: 20px;
+}
+.view-salud .views-row  {
+    overflow: hidden;
+    margin-bottom: 50px;
+}
+/**** my orders*****/
+.view-commerce-user-orders .view-grouping {
+    background: url("../images/bg-cafe.png") repeat scroll 0 0 transparent;
+    border-radius: 10px 10px 10px 10px;
+    clear: both;
+    color: #000000;
+    font-size: 0.85em;
+    font-weight: 400;
+    margin-bottom: 30px;
+    overflow: hidden;
+    padding: 25px;
+}
+.view-commerce-user-orders .view-grouping .views-field-field-image {
+    float: left;
+    margin-right: 20px;
+}
+.view-grouping-content > h3 {
+    font-size: 0.95em;
+    font-weight: 500;
+}
+.views-label {
+    color: #A7201F;
+    float: left;
+    margin-right: 5px;
+}
+.views-field.views-field-macpollo-commerce-reorder {
+    border-bottom: 1px solid #FFFFFF;
+    clear: both;
+    float: left;
+    margin: 20px 0;
+    padding-bottom: 10px;
+    width: 100%;
+}
+.views-field-macpollo-commerce-receiving-order {
+    clear: both;
+}
+.title-evaluate-order {
+    background: url("../images/bg-cafe.png") repeat scroll 0 0 transparent;
+
+}
+/****** pasos****/
+.hacer-pedido-online-pasos .pasos-pedido{
+width: 23%;
+margin: 1%;
+float: left;
+}
+.hacer-pedido-online-pasos .pasos-content{
+background: url("../images/bg-cafe.png") repeat scroll 0 0 transparent;
+border: 1px solid #D7A398;
+border-radius: 10px;
+text-align: center;
+height: 200px;
+line-height: 1;
+padding: 10% 2.5%;
+}
+.pasos-num {
+    background: url("../images/bg-numero.png") repeat scroll 0 0 transparent;
+    color: #A9171D;
+    display: block;
+    font-size: 1.8em;
+    font-weight: 700;
+    height: 46px;
+    line-height: 60px;
+    margin: auto;
+    text-align: center;
+    width: 90px;
+}
+.pasos-img  {
+min-height: 140px;
+}
+.pasos-msg {
+margin: 0 10px;
+}
+.hacer-pedido-online-page {
+    text-align: center;
+}
+.view-products .views-field-field-image .field-content {
+height: 70px;
+vertical-align: middle;
+display: table-cell;
+width: 170px;
+text-align: center;
+}
+.view-products  h3 {
+font-size: 1.3em;
+font-weight: 700;
+}
+.field-multiple-drag {
+    display: none;
+}
+.ingredients-content {
+    color: #9F3223;
+    display: block;
+    font-weight: 500;
+    margin: 10px 0;
+    text-transform: uppercase;
+}   
+.pre-num {
+    color: #A7201F;
+    float: left;
+    font-size: 1.8em;
+    font-weight: 500;
+    line-height: 1;
+    margin: 0 4px 0 0;
+}
+.password-suggestions.description  {
+    margin: 0 4%;
+}

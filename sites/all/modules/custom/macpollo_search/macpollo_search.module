@@ -1,0 +1,44 @@
+<?php
+/**
+ * @file
+ * Search form
+ */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function macpollo_search_form_search_block_form_alter(&$form, &$form_state, $form_id) {
+  $form['#submit'][] = 'macpollo_search_form_submit';
+}
+
+/**
+ * Search form submit
+ */
+function macpollo_search_form_submit($form, &$form_state) {
+  $val = $form_state['values']['search_block_form'];
+  $query['title'] = $val;
+  $form_state['redirect'] = array(
+    'buscar',
+    array('query' => $query),
+  );
+}
+
+/**
+ *Implements hook_form_FORM_ID_alter().
+ */
+function macpollo_search_form_views_exposed_form_alter(&$form, &$form_state) {
+  // dpm($form_state);
+  // dpm($form_state['view']->get_exposed_input());
+}
+
+/**
+ * Implements hook_views_post_render().
+ */
+// function macpollo_search_views_post_render(&$view, &$output, &$cache) {
+//   if (!empty($view->result)) {
+//     $view->options['exposed'] = FALSE;
+//     dpm($view);
+//     unset($view->display_handler->handlers['filter']['title']);
+//     unset($view->filter['title']);
+//   }
+// }

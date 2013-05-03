@@ -1,0 +1,4 @@
+name = MacPollo Front
+core = 7.x
+package = MacPollo
+description = MacPollo front page

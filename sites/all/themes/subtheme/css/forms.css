@@ -1,0 +1,138 @@
+/**FIELDSETS**/
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+.fieldset-wrapper {
+  overflow: hidden;
+}
+.fieldset-legend {
+  color: #868686;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+fieldset.checkout-buttons .fieldset-wrapper {
+  border: 0;
+  padding: 0;
+}
+/**FORM ITEMS**/
+
+.form-item, .form-actions {
+  margin: 5px 0;
+}
+/**LABELS, TEXTAREAS, SELECTS & INPUTS**/
+
+label, .macpollo-map-filters-label, .field-label{
+color: #A7201F;
+display: inline-block;
+font-size: 15px;
+font-weight: bold;
+margin-bottom: 5px;
+margin-top: 8px;
+}
+.form-textarea-wrapper textarea  {
+width: 95%;
+border: 1px solid rgba(184,182,183,1);
+background-color: rgb(252, 250, 250);
+height: 150px;
+padding: 5px;
+font-size: 13px;
+font-family: 'Lato', sans-serif;
+margin: 10px 0px 10px 0px;
+box-shadow: 0px 0px 8px rgba(184,182,183,1) inset;
+}
+.resizable-textarea .grippie {
+  display: none
+}
+.aguayo-select-wrapper {
+    background: url("../images/bg-select.png") no-repeat scroll right 0 #FFFFFF;
+    border: 1px solid #EDC400;
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 2px 2px 3px #CFCFCF;
+    display: block;
+    margin: 3px 0;
+    overflow: hidden;
+    width: 96%;
+    min-width: 200px;
+}
+select  {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    box-shadow: 0 0 0 0 transparent;
+    color: #676767;
+    font-size: 0.75em;
+    margin: 0;
+    padding: 3px 5px;
+    width: 110%;
+-webkit-appearance: none;
+}
+input[type="text"], input[type="password"], textarea, input[type="search"], input[type="email"], input[type="number"], input[type="file"]{
+border: 1px solid rgba(184,182,183,1);
+  background-color: rgb(252, 250, 250);
+  width: 95%;
+  padding: 5px;
+  font-size: 13px;
+box-shadow: 0px 0px 8px rgba(184,182,183,1) inset;
+-webkit-appearance: none;
+}
+input[type="file"] {
+    width: auto;
+}
+/***BOTONES */
+
+input[type="submit"], .btn-red, .macpollo-register-link a {
+  background: none no-repeat scroll right center rgb(198,59,56);
+  background: none no-repeat scroll right center, -moz-linear-gradient(rgb(198,59,56)50%, rgb(132,40,39));
+  background: none no-repeat scroll right center, -webkit-linear-gradient(rgb(198,59,56)50%, rgb(132,40,39));
+  background: none no-repeat scroll right center, -o-linear-gradient(rgb(198,59,56)50%, rgb(132,40,39));
+  background: none no-repeat scroll right center, linear-gradient(rgb(198,59,56)50%, rgb(132,40,39));
+  padding:8px 20px;
+  color:#FFFFFF;
+  font-size:13px;
+  text-decoration:none;
+  border-radius:5px;
+  border: none;
+  cursor:pointer;
+  margin: 5px;
+  font-weight: 500;
+  overflow: hidden;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  -webkit-appearance: none;
+}
+.btn-red a, .btn-red a:hover {
+    color:#FFFFFF;
+  font-size:13px;
+    padding:8px 20px;
+display: block;
+  font-weight: 500;
+  text-decoration: none;
+}
+.btn-red {
+  padding: 0;
+}
+input[type="submit"]:hover, .btn-red:hover, .macpollo-register-link a:hover {
+  background: none no-repeat scroll right center rgba(74,73,73,1);
+  background: none no-repeat scroll right center, -moz-linear-gradient(rgba(74,73,73,1))50%, rgba(17,17,17,1));
+background: none no-repeat scroll right center, -webkit-linear-gradient(rgba(74,73,73,1)50%, rgba(17,17,17,1));
+background: none no-repeat scroll right center, -o-linear-gradient(rgb(198,59,56)50%, rgba(17,17,17,1));
+background: none no-repeat scroll right center, linear-gradient(rgb(198,59,56)50%, rgba(17,17,17,1));
+color: #FFFFFF;
+text-decoration: none;
+}
+
+input[type="submit"]:active,  input[type="submit"]:visited{
+  background: none no-repeat scroll right center rgba(103,69,43,1);
+  background: none no-repeat scroll right center, -moz-linear-gradient(rgba(103,69,43,1))50%, rgba(82,55,35,1));
+background: none no-repeat scroll right center, -webkit-linear-gradient(rgba(103,69,43,1)50%, rgba(82,55,35,1));
+background: none no-repeat scroll right center, -o-linear-gradient(rgba(103,69,43,1)50%, rgba(82,55,35,1));
+background: none no-repeat scroll right center, linear-gradient(rgba(103,69,43,1)50%, rgba(82,55,35,1));
+}
+.node ul{
+padding-left: 20px;
+color: #000;
+font-weight: 400;
+}

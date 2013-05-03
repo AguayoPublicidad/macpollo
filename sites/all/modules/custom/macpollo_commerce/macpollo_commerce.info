@@ -1,0 +1,6 @@
+name = MacPollo Commerce
+core = 7.x
+package = MacPollo
+description = Manage Commerce
+files[] = views/handlers/macpollo_commerce_handler_field_reorder.inc
+files[] = views/handlers/macpollo_commerce_handler_field_receiving_order.inc

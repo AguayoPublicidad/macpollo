@@ -1,0 +1,103 @@
+
+#block-aguayo-tools-aguayo-logo{
+    float: left;
+    margin-left: -150px;
+    position: relative;
+}
+.not-front #header-second .section{
+    background: url("../images/top-back.jpg") no-repeat center 0 transparent;
+}
+.front #header-second .section{
+    background: url("../images/bg-top-home.jpg") no-repeat center 0 transparent;
+}
+#main .section{
+    background: url("../images/center-back.jpg") repeat-y center 0 transparent;
+}
+
+.region-header-second .block-menu .content ul  {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.region-header-second .block-menu .content ul  li {
+margin: 0 2px;
+display: inline-block;
+}
+.region-header-second .block-menu .content ul  li  a {
+    color:#FFF;
+    padding:6px 33px 5px 15px;
+    display:block;
+    text-decoration:none;
+}
+.region-header-second .block-menu .content ul  li  a:active,
+.region-header-second .block-menu .content ul  li.active-trail a{
+    color:#b29762;
+}
+.region-header-second .block-menu .content ul  li a#user-login {
+    background:url(../images/btns_login.png) no-repeat 0px 0px;
+}
+.region-header-second .block-menu .content ul  li a#user-login:hover{
+    background:url(../images/btns_login.png) no-repeat 0px -29px;    
+}
+.region-header-second .block-menu .content ul  li a#user-login:active,
+.region-header-second .block-menu .content ul  li.active-trail a#user-login{
+    background:url(../images/btns_login.png) no-repeat 0px -58px;
+}
+.region-header-second .block-menu .content ul  li a#menu-logout {
+    background:url(../images/btns_login.png) no-repeat -130px 0px;
+}
+.region-header-second .block-menu .content ul  li a#menu-logout:hover{
+    background:url(../images/btns_login.png) no-repeat -130px -29px;
+}
+.region-header-second .block-menu .content ul  li a#menu-logout:active,
+.region-header-second .block-menu .content ul  li.active-trail a#menu-logout{
+    background:url(../images/btns_login.png) no-repeat -130px -58px;
+}
+.region-header-second .block-menu .content ul  li a#menu-register {
+    background:url(../images/btns_login.png) no-repeat -259px 0px;
+}
+.region-header-second .block-menu .content ul  li a#menu-register:hover{
+    background:url(../images/btns_login.png) no-repeat -259px -29px;
+}
+.region-header-second .block-menu .content ul  li a#menu-register:active,
+.region-header-second .block-menu .content ul  li.active-trail a#menu-register{
+    background:url(../images/btns_login.png) no-repeat -259px -58px;
+}
+.region-header-second .block-menu .content ul  li a#menu-mail {
+background: url(../images/btns_login.png) no-repeat -358px 0px;
+font-size: 0;
+padding: 18px 18px 8px 20px;
+}
+.region-header-second .block-menu .content ul  li a#menu-mail:hover{
+    background:url(../images/btns_login.png) no-repeat -358px -29px;
+}
+.region-header-second .block-menu .content ul  li a#menu-mail:active,
+.region-header-second .block-menu .content ul  li.active-trail a#menu-mail{
+    background:url(../images/btns_login.png) no-repeat -358px -58px;
+}
+.region-header-second .block-menu .content ul  li a#menu-account {
+background: url(../images/btns_login.png) no-repeat -398px 0px;
+padding: 6px 23px 5px 15px;
+}
+.region-header-second .block-menu .content ul  li a#menu-account:hover{
+    background:url(../images/btns_login.png) no-repeat -398px -29px;
+}
+.region-header-second .block-menu .content ul  li a#menu-account.active,
+.region-header-second .block-menu .content ul  li.active-trail a#menu-account{
+    background:url(../images/btns_login.png) no-repeat -398px -58px;
+}
+
+#block-aguayo-tools-aguayo-breadcrumb {
+    float: left;
+    padding: 10px 0 14px 70px;
+}
+.region-header-second .block-menu {
+text-align: right;
+padding: 7px 55px 5px 0;
+}
+
+.tabs ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}

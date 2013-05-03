@@ -1,0 +1,5 @@
+name = Aguayo Tools
+description = Additional helper tools for the Theme
+core = 7.x
+package = Custom
+

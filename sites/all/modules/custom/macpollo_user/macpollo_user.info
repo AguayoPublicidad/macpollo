@@ -1,0 +1,6 @@
+name = MacPollo User
+core = 7.x
+package = MacPollo
+description = MacPollo user manage
+
+dependencies[] = profile2

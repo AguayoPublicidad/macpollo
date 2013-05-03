@@ -1,0 +1,15 @@
+<?php
+/**
+ * @file
+ * Módulo para manejar campos custom en views.
+ */
+
+/**
+ * Implements hook_views_api().
+ */
+function macpollo_views_field_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'macpollo_views_field') . '/views',
+  );
+}
